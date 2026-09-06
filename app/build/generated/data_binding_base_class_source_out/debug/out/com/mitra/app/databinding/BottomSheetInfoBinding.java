@@ -5,10 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.mitra.app.R;
@@ -18,7 +19,7 @@ import java.lang.String;
 
 public final class BottomSheetInfoBinding implements ViewBinding {
   @NonNull
-  private final ScrollView rootView;
+  private final NestedScrollView rootView;
 
   @NonNull
   public final TextView btnDeleteAllChats;
@@ -32,18 +33,23 @@ public final class BottomSheetInfoBinding implements ViewBinding {
   @NonNull
   public final Button btnOkay;
 
-  private BottomSheetInfoBinding(@NonNull ScrollView rootView, @NonNull TextView btnDeleteAllChats,
-      @NonNull TextView btnFeedback, @NonNull TextView btnLogout, @NonNull Button btnOkay) {
+  @NonNull
+  public final LinearLayout containerInfo;
+
+  private BottomSheetInfoBinding(@NonNull NestedScrollView rootView,
+      @NonNull TextView btnDeleteAllChats, @NonNull TextView btnFeedback,
+      @NonNull TextView btnLogout, @NonNull Button btnOkay, @NonNull LinearLayout containerInfo) {
     this.rootView = rootView;
     this.btnDeleteAllChats = btnDeleteAllChats;
     this.btnFeedback = btnFeedback;
     this.btnLogout = btnLogout;
     this.btnOkay = btnOkay;
+    this.containerInfo = containerInfo;
   }
 
   @Override
   @NonNull
-  public ScrollView getRoot() {
+  public NestedScrollView getRoot() {
     return rootView;
   }
 
@@ -92,8 +98,14 @@ public final class BottomSheetInfoBinding implements ViewBinding {
         break missingId;
       }
 
-      return new BottomSheetInfoBinding((ScrollView) rootView, btnDeleteAllChats, btnFeedback,
-          btnLogout, btnOkay);
+      id = R.id.containerInfo;
+      LinearLayout containerInfo = ViewBindings.findChildViewById(rootView, id);
+      if (containerInfo == null) {
+        break missingId;
+      }
+
+      return new BottomSheetInfoBinding((NestedScrollView) rootView, btnDeleteAllChats, btnFeedback,
+          btnLogout, btnOkay, containerInfo);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

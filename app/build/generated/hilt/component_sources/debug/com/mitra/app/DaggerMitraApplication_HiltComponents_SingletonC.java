@@ -483,15 +483,15 @@ public final class DaggerMitraApplication_HiltComponents_SingletonC {
 
     @IdentifierNameString
     private static final class LazyClassKeyProvider {
-      static String com_mitra_app_ui_chat_ChatViewModel = "com.mitra.app.ui.chat.ChatViewModel";
-
       static String com_mitra_app_ui_login_LoginViewModel = "com.mitra.app.ui.login.LoginViewModel";
 
-      @KeepFieldType
-      ChatViewModel com_mitra_app_ui_chat_ChatViewModel2;
+      static String com_mitra_app_ui_chat_ChatViewModel = "com.mitra.app.ui.chat.ChatViewModel";
 
       @KeepFieldType
       LoginViewModel com_mitra_app_ui_login_LoginViewModel2;
+
+      @KeepFieldType
+      ChatViewModel com_mitra_app_ui_chat_ChatViewModel2;
     }
 
     private static final class SwitchingProvider<T> implements Provider<T> {
@@ -636,7 +636,7 @@ public final class DaggerMitraApplication_HiltComponents_SingletonC {
     }
 
     @Override
-    public void injectMitraApplication(MitraApplication mitraApplication) {
+    public void injectMitraApplication(MitraApplication arg0) {
     }
 
     @Override

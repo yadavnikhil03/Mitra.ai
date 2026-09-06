@@ -1,242 +1,254 @@
 [
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_bubble_user.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_bubble_user.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_ic_chats.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\ic_chats.xml"
     },
     {
-        "merged": "com.mitra.app-debug-51:/layout_item_message_mitra.xml.flat",
-        "source": "com.mitra.app-main-53:/layout/item_message_mitra.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_drag_handle.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\drag_handle.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\layout_bottom_sheet_confirm_delete.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\bottom_sheet_confirm_delete.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_ic_splash_logo.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\ic_splash_logo.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_gradient_overlay.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\gradient_overlay.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_bubble_mitra.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_bubble_mitra.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_auth_card.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_auth_card.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\layout_item_support_card.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\item_support_card.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_mic_recording.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_mic_recording.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\anim_fade_out.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\anim\\fade_out.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_auth_input.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_auth_input.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_ic_mic.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\ic_mic.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_cursor_ember.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\cursor_ember.xml"
+        "merged": "com.mitra.app-debug-58:/layout_bottom_sheet_info.xml.flat",
+        "source": "com.mitra.app-main-60:/layout/bottom_sheet_info.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\layout_item_support_card.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\item_support_card.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_mic_recording.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_mic_recording.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\layout_item_typing_indicator.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\item_typing_indicator.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\font_inter_medium.ttf.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\font\\inter_medium.ttf"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\anim_fade_in.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\anim\\fade_in.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_incognito_banner.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_incognito_banner.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\anim_fade_out.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\anim\\fade_out.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\layout_activity_chat.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\activity_chat.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_ic_send.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\ic_send.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\layout_bottom_sheet_confirm_delete.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\bottom_sheet_confirm_delete.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\layout_activity_login.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\activity_login.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\xml_network_security_config.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\xml\\network_security_config.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_ic_mic.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\ic_mic.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\layout_bottom_sheet_chat_list.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\bottom_sheet_chat_list.xml"
     },
     {
-        "merged": "com.mitra.app-debug-51:/layout_activity_chat.xml.flat",
-        "source": "com.mitra.app-main-53:/layout/activity_chat.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_gradient_overlay.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\gradient_overlay.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_support_card.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_support_card.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\ic_launcher_background.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_bubble_mitra.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_bubble_mitra.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_new_chat_chip.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_new_chat_chip.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\xml_network_security_config.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\xml\\network_security_config.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_ghost_chip.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_ghost_chip.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_ic_mitra_dot.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\ic_mitra_dot.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_error_banner.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_error_banner.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_typing_dot.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\typing_dot.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_bubble_user.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_bubble_user.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_ic_plus.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\ic_plus.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_bottom_sheet.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_bottom_sheet.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_ic_delete.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\ic_delete.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_send_btn.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_send_btn.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_send_btn.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_send_btn.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\anim_bubble_in.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\anim\\bubble_in.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_ic_info.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\ic_info.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_composer_input_focused.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_composer_input_focused.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\layout_item_typing_indicator.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\item_typing_indicator.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\layout_bottom_sheet_feedback.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\bottom_sheet_feedback.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_cursor_ember.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\cursor_ember.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_ic_launcher_background.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\ic_launcher_background.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\layout_item_message_user.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\item_message_user.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\layout_activity_splash.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\activity_splash.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_auth_card.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_auth_card.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\layout_item_message_mitra.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\item_message_mitra.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_cta_button.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_cta_button.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_glow_orb.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\glow_orb.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_glow_orb.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\glow_orb.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_ghost_chip.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_ghost_chip.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_composer_input.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_composer_input.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_ic_launcher_foreground.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\ic_launcher_foreground.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\font_inter_bold.ttf.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\font\\inter_bold.ttf"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\anim_bubble_in.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\anim\\bubble_in.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_chat_row.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_chat_row.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_ic_mic_stop.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\ic_mic_stop.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_ic_info.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\ic_info.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\mipmap-anydpi-v26\\ic_launcher.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\mipmap-anydpi-v26\\ic_launcher.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_rose_button.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_rose_button.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\layout_item_chat_row.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\item_chat_row.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\font_inter_regular.ttf.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\font\\inter_regular.ttf"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_incognito_banner.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_incognito_banner.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_ghost_chip_outline.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_ghost_chip_outline.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_bottom_sheet.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_bottom_sheet.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\font_inter.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\font\\inter.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_suggestion_card.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_suggestion_card.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_composer_input_focused.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_composer_input_focused.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_ic_splash_logo.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\ic_splash_logo.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_typing_bubble.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_typing_bubble.xml"
     },
     {
-        "merged": "com.mitra.app-debug-51:/drawable_ic_volume_up.xml.flat",
-        "source": "com.mitra.app-main-53:/drawable/ic_volume_up.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_ic_volume_up.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\ic_volume_up.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\layout_bottom_sheet_chat_list.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\bottom_sheet_chat_list.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_ic_send.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\ic_send.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_ic_chats.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\ic_chats.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_ic_plus.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\ic_plus.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\layout_item_message_user.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\item_message_user.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_ic_delete.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\ic_delete.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_composer_input.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_composer_input.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_auth_input.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_auth_input.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_drag_handle.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\drag_handle.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_incognito_active_chip.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_incognito_active_chip.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_icon_btn.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_icon_btn.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.mitra.app-debug-51:/drawable_ic_volume_off.xml.flat",
-        "source": "com.mitra.app-main-53:/drawable/ic_volume_off.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_typing_dot.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\typing_dot.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_error_banner.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_error_banner.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\layout_activity_login.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\activity_login.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_ghost_chip_outline.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_ghost_chip_outline.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\layout_item_message_mitra.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\item_message_mitra.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\layout_bottom_sheet_info.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\bottom_sheet_info.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_support_card.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_support_card.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_incognito_active_chip.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_incognito_active_chip.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\layout_bottom_sheet_feedback.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\bottom_sheet_feedback.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_new_chat_chip.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_new_chat_chip.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\layout_bottom_sheet_info.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\bottom_sheet_info.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\layout_item_chat_row.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\item_chat_row.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_suggestion_card.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_suggestion_card.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_typing_bubble.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_typing_bubble.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_ic_mitra_dot.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\ic_mitra_dot.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_cta_button.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_cta_button.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_ic_volume_off.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\ic_volume_off.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\layout_activity_chat.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\activity_chat.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\layout_activity_splash.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\activity_splash.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-51:\\drawable_bg_chat_row.xml.flat",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\drawable\\bg_chat_row.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_icon_btn.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_icon_btn.xml"
+    },
+    {
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_bg_rose_button.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\bg_rose_button.xml"
+    },
+    {
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\anim_fade_in.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\anim\\fade_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-debug-58:\\drawable_ic_mic_stop.xml.flat",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\drawable\\ic_mic_stop.xml"
     }
 ]

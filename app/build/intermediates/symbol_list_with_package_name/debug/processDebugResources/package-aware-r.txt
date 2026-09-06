@@ -1335,7 +1335,11 @@ attr yearStyle
 attr yearTodayStyle
 bool abc_action_bar_embed_tabs
 bool abc_config_actionMenuItemAllCaps
+bool enable_system_alarm_service_default
+bool enable_system_foreground_service_default
+bool enable_system_job_service_default
 bool mtrl_btn_textappearance_all_caps
+bool workmanager_test_configuration
 color abc_background_cache_hint_selector_material_dark
 color abc_background_cache_hint_selector_material_light
 color abc_btn_colored_borderless_text_material
@@ -3234,6 +3238,10 @@ drawable test_level_drawable
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
 drawable typing_dot
+font inter
+font inter_bold
+font inter_medium
+font inter_regular
 id ALT
 id BOTTOM_END
 id BOTTOM_START
@@ -3400,6 +3408,7 @@ id compress
 id confirm_button
 id constraint
 id container
+id containerInfo
 id content
 id contentPanel
 id contiguous

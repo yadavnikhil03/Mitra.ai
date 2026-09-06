@@ -1,58 +1,54 @@
 [
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-50:\\layout\\bottom_sheet_info.xml",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\bottom_sheet_info.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-57:\\layout\\bottom_sheet_confirm_delete.xml",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\bottom_sheet_confirm_delete.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-50:\\layout\\bottom_sheet_feedback.xml",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\bottom_sheet_feedback.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-57:\\layout\\bottom_sheet_feedback.xml",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\bottom_sheet_feedback.xml"
     },
     {
-        "merged": "com.mitra.app-mergeDebugResources-50:/layout/item_message_mitra.xml",
-        "source": "com.mitra.app-main-53:/layout/item_message_mitra.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-57:\\layout\\activity_splash.xml",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\activity_splash.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-50:\\layout\\item_message_mitra.xml",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\item_message_mitra.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-57:\\layout\\bottom_sheet_info.xml",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\bottom_sheet_info.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-50:\\layout\\activity_login.xml",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\activity_login.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-57:\\layout\\item_chat_row.xml",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\item_chat_row.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-50:\\layout\\item_message_user.xml",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\item_message_user.xml"
+        "merged": "com.mitra.app-mergeDebugResources-57:/layout/bottom_sheet_info.xml",
+        "source": "com.mitra.app-main-60:/layout/bottom_sheet_info.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-50:\\layout\\item_support_card.xml",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\item_support_card.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-57:\\layout\\item_support_card.xml",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\item_support_card.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-50:\\layout\\activity_chat.xml",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\activity_chat.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-57:\\layout\\activity_chat.xml",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\activity_chat.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-50:\\layout\\item_typing_indicator.xml",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\item_typing_indicator.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-57:\\layout\\activity_login.xml",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\activity_login.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-50:\\layout\\activity_splash.xml",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\activity_splash.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-57:\\layout\\item_typing_indicator.xml",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\item_typing_indicator.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-50:\\layout\\item_chat_row.xml",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\item_chat_row.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-57:\\layout\\item_message_mitra.xml",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\item_message_mitra.xml"
     },
     {
-        "merged": "com.mitra.app-mergeDebugResources-50:/layout/activity_chat.xml",
-        "source": "com.mitra.app-main-53:/layout/activity_chat.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-57:\\layout\\bottom_sheet_chat_list.xml",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\bottom_sheet_chat_list.xml"
     },
     {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-50:\\layout\\bottom_sheet_confirm_delete.xml",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\bottom_sheet_confirm_delete.xml"
-    },
-    {
-        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-50:\\layout\\bottom_sheet_chat_list.xml",
-        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-53:\\layout\\bottom_sheet_chat_list.xml"
+        "merged": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-mergeDebugResources-57:\\layout\\item_message_user.xml",
+        "source": "C:\\Users\\nikhi\\.gradle\\daemon\\8.7\\com.mitra.app-main-60:\\layout\\item_message_user.xml"
     }
 ]

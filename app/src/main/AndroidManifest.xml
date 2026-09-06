@@ -4,6 +4,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".MitraApplication"
@@ -14,8 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mitra"
         android:networkSecurityConfig="@xml/network_security_config">
-
-        <!-- Splash screen handled by SplashActivity -->
+        
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"

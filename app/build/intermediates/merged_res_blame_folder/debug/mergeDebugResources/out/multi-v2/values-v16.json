@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.mitra.app-mergeDebugResources-49:/values-v16/values-v16.xml",
+            "outputFile": "com.mitra.app-mergeDebugResources-56:/values-v16/values-v16.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\nikhi\\.gradle\\caches\\transforms-4\\ee404ccaab37326838cd1b42d76b6ba1\\transformed\\appcompat-1.6.1\\res\\values-v16\\values-v16.xml",
+                    "source": "C:\\Users\\nikhi\\.gradle\\caches\\transforms-4\\32e44a37d60508dbfd20676d49e8f43c\\transformed\\appcompat-1.6.1\\res\\values-v16\\values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

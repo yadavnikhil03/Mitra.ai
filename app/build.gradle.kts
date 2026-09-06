@@ -58,6 +58,7 @@ android {
 
 dependencies {
     implementation(libs.core.ktx)
+    implementation(libs.fragment)
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.lifecycle.livedata)
     implementation(libs.lifecycle.runtime)
@@ -70,6 +71,8 @@ dependencies {
     implementation(libs.recyclerview)
 
     implementation(libs.coroutines.android)
+    implementation(libs.work.runtime)
+    implementation(libs.work.runtime.ktx)
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)

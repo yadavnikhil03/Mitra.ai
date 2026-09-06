@@ -97,6 +97,10 @@ drawable ic_splash_logo
 drawable ic_volume_off
 drawable ic_volume_up
 drawable typing_dot
+font inter
+font inter_bold
+font inter_medium
+font inter_regular
 id authCard
 id brandContainer
 id brandDot
@@ -131,6 +135,7 @@ id chipSuggestion2
 id chipSuggestion3
 id chipSuggestion4
 id composerContainer
+id containerInfo
 id dot1
 id dot2
 id dot3

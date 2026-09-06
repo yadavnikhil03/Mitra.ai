@@ -26,26 +26,24 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Edge-to-edge
+
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Apply insets so card stays above keyboard
+
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(bars.left, bars.top, bars.right, bars.bottom)
             insets
         }
 
-        // Start particle background
+
         binding.particleView.start()
 
-        // Animate glow orb (breathe)
         startGlowBreath()
 
-        // 3-D tilt on auth card pointer events
         setupCardTilt()
 
         setupClickListeners()
@@ -94,7 +92,6 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.etEmail.text?.toString()?.trim() ?: ""
             vm.forgotPassword(email)
         }
-        // Pressing Enter on password submits
         binding.etPassword.setOnEditorActionListener { _, _, _ ->
             binding.btnAuthSubmit.performClick(); true
         }
@@ -105,11 +102,11 @@ class LoginActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     vm.uiState.collect { state ->
-                        // Loading state
+
                         binding.btnAuthSubmit.isEnabled = !state.isLoading
                         binding.btnAuthSubmit.alpha     = if (state.isLoading) 0.55f else 1f
 
-                        // Toggle button text
+
                         binding.btnAuthToggle.text = when (state.mode) {
                             AuthMode.LOGIN  -> getString(R.string.new_here)
                             AuthMode.SIGNUP -> getString(R.string.have_account)
@@ -119,7 +116,7 @@ class LoginActivity : AppCompatActivity() {
                             AuthMode.SIGNUP -> getString(R.string.sign_up)
                         }
 
-                        // Error banner
+
                         if (state.errorMessage.isNotBlank()) {
                             binding.tvAuthError.text       = state.errorMessage
                             binding.tvAuthError.visibility = View.VISIBLE

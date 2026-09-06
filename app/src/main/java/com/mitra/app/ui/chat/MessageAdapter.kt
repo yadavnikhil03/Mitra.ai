@@ -7,6 +7,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,7 +84,8 @@ class MessageAdapter(
             b.tvMessage.text = msg.content
             b.tvTime.text = msg.timestamp.toFormattedTime()
             b.btnSpeak.setOnClickListener { onSpeak?.invoke(msg.content) }
-            b.msgContainer.setOnLongClickListener {
+            b.msgContainer.setOnLongClickListener { v ->
+                v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                 copyToClipboard(b.root.context, msg.content)
                 true
             }
@@ -95,7 +97,8 @@ class MessageAdapter(
         fun bind(msg: ChatMessage) {
             b.tvMessage.text = msg.content
             b.tvTime.text = msg.timestamp.toFormattedTime()
-            b.msgContainer.setOnLongClickListener {
+            b.msgContainer.setOnLongClickListener { v ->
+                v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                 copyToClipboard(b.root.context, msg.content)
                 true
             }

@@ -1,16 +1,16 @@
 package com.mitra.app.worker
 
 import android.content.Context
-import androidx.work.CoroutineWorker
+import androidx.work.Worker
 import androidx.work.WorkerParameters
 import java.util.Calendar
 
 class ProactiveCheckInWorker(
     appContext: Context,
     workerParams: WorkerParameters
-) : CoroutineWorker(appContext, workerParams) {
+) : Worker(appContext, workerParams) {
 
-    override suspend fun doWork(): Result {
+    override fun doWork(): Result {
         val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
 
         val messages = when (hour) {

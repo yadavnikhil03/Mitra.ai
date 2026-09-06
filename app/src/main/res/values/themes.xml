@@ -24,6 +24,8 @@
         <item name="android:windowLightStatusBar">false</item>
         <item name="bottomSheetStyle">@style/Widget.Mitra.BottomSheet</item>
         <item name="bottomSheetDialogTheme">@style/Theme.Mitra.BottomSheetDialog</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
     </style>
 
     <style name="Theme.Mitra.Splash" parent="Theme.SplashScreen">

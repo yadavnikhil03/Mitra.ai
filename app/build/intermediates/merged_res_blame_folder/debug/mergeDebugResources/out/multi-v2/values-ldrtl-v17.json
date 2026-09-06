@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.mitra.app-mergeDebugResources-49:/values-ldrtl-v17/values-ldrtl-v17.xml",
+            "outputFile": "com.mitra.app-mergeDebugResources-56:/values-ldrtl-v17/values-ldrtl-v17.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\nikhi\\.gradle\\caches\\transforms-4\\fefee5f488c3ad83a11e6321e69e8bef\\transformed\\material-1.11.0\\res\\values-ldrtl-v17\\values-ldrtl-v17.xml",
+                    "source": "C:\\Users\\nikhi\\.gradle\\caches\\transforms-4\\4266d737f31fb9134143ee4b282130f6\\transformed\\material-1.11.0\\res\\values-ldrtl-v17\\values-ldrtl-v17.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",

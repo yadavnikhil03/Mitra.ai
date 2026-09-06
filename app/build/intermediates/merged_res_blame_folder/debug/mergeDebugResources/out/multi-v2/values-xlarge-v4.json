@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.mitra.app-mergeDebugResources-49:/values-xlarge-v4/values-xlarge-v4.xml",
+            "outputFile": "com.mitra.app-mergeDebugResources-56:/values-xlarge-v4/values-xlarge-v4.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\nikhi\\.gradle\\caches\\transforms-4\\ee404ccaab37326838cd1b42d76b6ba1\\transformed\\appcompat-1.6.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "source": "C:\\Users\\nikhi\\.gradle\\caches\\transforms-4\\32e44a37d60508dbfd20676d49e8f43c\\transformed\\appcompat-1.6.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7",
                         "startColumns": "4,4,4,4,4,4",
