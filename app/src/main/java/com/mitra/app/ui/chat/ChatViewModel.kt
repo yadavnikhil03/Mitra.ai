@@ -379,7 +379,7 @@ class ChatViewModel @Inject constructor(
         val chat = activeChat ?: return
         val committed = chat.messages.map { MessageItem.Regular(it) }
         val streaming = MessageItem.Regular(
-            ChatMessage(role = Role.MITRA, content = text)
+            ChatMessage(id = "streaming_active_bubble", role = Role.MITRA, content = text)
         )
         _state.update { it.copy(items = committed + streaming) }
     }

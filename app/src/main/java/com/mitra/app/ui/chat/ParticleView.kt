@@ -11,19 +11,11 @@ import android.view.View
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
-
-/**
- * Full-screen particle canvas that reproduces the web app's 2-D starfield.
- *
- * Particles float toward the camera (z-depth projection), swaying gently,
- * with warm ember/rose colours — matching the CSS canvas animation exactly.
- */
 class ParticleView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : View(context, attrs) {
 
-    // ── Colours (match CSS variables) ────────────────────────────────────────
     private val EMBER_CORE  = 0xFFFFD3A0.toInt()
     private val EMBER       = 0xFFFFB877.toInt()
     private val EMBER_DEEP  = 0xFFF0925A.toInt()
@@ -59,7 +51,6 @@ class ParticleView @JvmOverloads constructor(
         }
     }
 
-    // ── Sprite cache — pre-rendered radial gradients keyed by colour ─────────
     private val spriteCache = mutableMapOf<Int, RadialGradient>()
     private var spriteRadius = 0f
 
@@ -146,20 +137,9 @@ class ParticleView @JvmOverloads constructor(
             val size   = p.r * scale * 7f
             val alphaF = min(0.85f, scale * 1.1f) * (0.7f + 0.3f * sin(p.tw))
 
-            val grad = RadialGradient(
-                sx, sy, size,
-                intArrayOf(
-                    applyAlpha(p.colour, alphaF * 0.85f),
-                    applyAlpha(p.colour, alphaF * 0.38f),
-                    applyAlpha(p.colour, 0f)
-                ),
-                floatArrayOf(0f, 0.35f, 1f),
-                Shader.TileMode.CLAMP
-            )
-            paint.shader = grad
+            paint.color = applyAlpha(p.colour, alphaF)
             canvas.drawCircle(sx, sy, size, paint)
         }
-        paint.shader = null
     }
 
     private fun applyAlpha(colour: Int, alpha: Float): Int {

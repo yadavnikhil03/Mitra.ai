@@ -469,6 +469,8 @@ class ChatActivity : AppCompatActivity() {
             binding.btnMic.imageTintList = null
             binding.btnMic.clearAnimation()
             binding.btnMic.animate().scaleX(1f).scaleY(1f).setDuration(200).start()
+            binding.btnMic.scaleX = 1f
+            binding.btnMic.scaleY = 1f
             binding.etMessage.hint = getString(R.string.type_anything)
         }
     }

@@ -45,6 +45,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun submit(email: String, password: String) {
+        if (_uiState.value.isLoading) return
         if (email.isBlank() || password.isBlank()) {
             _uiState.value = _uiState.value.copy(errorMessage = "Enter both email and password.")
             return

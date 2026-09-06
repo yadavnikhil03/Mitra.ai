@@ -24,7 +24,8 @@ class ChatListSheet(
     private val onSelect: (Chat) -> Unit,
     private val onDelete: (Chat) -> Unit,
     private val onNewChat: () -> Unit,
-    private val onIncognito: () -> Unit
+    private val onIncognito: () -> Unit,
+    private val onExitIncognito: (() -> Unit)? = null
 ) : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetChatListBinding? = null
@@ -52,7 +53,6 @@ class ChatListSheet(
             this.adapter  = adapter
         }
 
-        // Swipe-to-delete
         val swipeHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             private val paint = Paint().apply { color = 0xFFE89BA8.toInt() }
             private val cornerRadius = 14f * resources.displayMetrics.density
@@ -70,7 +70,7 @@ class ChatListSheet(
                                      vh: RecyclerView.ViewHolder,
                                      dX: Float, dY: Float,
                                      actionState: Int, isActive: Boolean) {
-                // Draw rose-tinted delete background on swipe
+
                 val itemView = vh.itemView
                 if (dX < 0) {
                     val bg = RectF(
@@ -87,7 +87,7 @@ class ChatListSheet(
         val isIncognitoActive = chats.find { it.id == activeChatId }?.isIncognito ?: false
         if (isIncognitoActive) {
             binding.btnIncognito.text = getString(R.string.exit_incognito)
-            binding.btnIncognito.setOnClickListener { dismiss(); onNewChat() }
+            binding.btnIncognito.setOnClickListener { dismiss(); onExitIncognito?.invoke() ?: onNewChat() }
         } else {
             binding.btnIncognito.text = getString(R.string.incognito)
             binding.btnIncognito.setOnClickListener { dismiss(); onIncognito() }
@@ -98,8 +98,6 @@ class ChatListSheet(
     }
 
     override fun onDestroyView() { super.onDestroyView(); _binding = null }
-
-    // ── Inner adapter ─────────────────────────────────────────────────────────
     private inner class ChatRowAdapter(
         private val chats: MutableList<Chat>,
         private val activeChatId: String?,
