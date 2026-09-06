@@ -113,6 +113,18 @@ class ChatViewModel @Inject constructor(
 
     fun newChat() {
         discardIncognitoIfActive()
+
+        val current = activeChat
+        if (current != null && !current.isIncognito && current.messages.none { it.role == Role.USER }) {
+            current.messages.clear()
+            current.messages.add(ChatMessage(role = Role.MITRA, content = GreetingUtils.greetingLine()))
+            current.updatedAt = System.currentTimeMillis()
+            supportShown = false
+            refreshUi()
+            viewModelScope.launch { emit(ChatEvent.ScrollToBottom) }
+            return
+        }
+
         val greeting = GreetingUtils.greetingLine()
         val chat = Chat(messages = mutableListOf(
             ChatMessage(role = Role.MITRA, content = greeting)
@@ -123,6 +135,22 @@ class ChatViewModel @Inject constructor(
         refreshUi()
         persistActive()
         viewModelScope.launch { emit(ChatEvent.ScrollToBottom) }
+    }
+
+    fun exitIncognito() {
+        discardIncognitoIfActive()
+        val mostRecentNormal = chatsMap.values
+            .filter { !it.isIncognito }
+            .maxByOrNull { it.updatedAt }
+
+        if (mostRecentNormal != null) {
+            activeChat = mostRecentNormal
+            supportShown = false
+            refreshUi()
+            viewModelScope.launch { emit(ChatEvent.ScrollToBottom) }
+        } else {
+            newChat()
+        }
     }
 
     fun newIncognitoChat() {
@@ -320,7 +348,7 @@ class ChatViewModel @Inject constructor(
                 isIncognito = chat.isIncognito,
                 activeChatId = chat.id,
                 allChats    = chatsMap.values
-                    .filter { c -> !c.isIncognito }
+                    .filter { c -> !c.isIncognito && (c.id == chat.id || c.messages.any { m -> m.role == Role.USER }) }
                     .sortedByDescending { c -> c.updatedAt }
             )
         }

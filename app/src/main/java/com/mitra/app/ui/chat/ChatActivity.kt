@@ -231,7 +231,7 @@ class ChatActivity : AppCompatActivity() {
 
         binding.btnHeaderNewChat.setOnClickListener { vm.newChat() }
         binding.btnInfo.setOnClickListener { showInfoSheet() }
-        binding.incognitoBanner.setOnClickListener { vm.newChat() }
+        binding.incognitoBanner.setOnClickListener { vm.exitIncognito() }
 
         binding.btnDrawerNewChat.setOnClickListener {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -240,7 +240,7 @@ class ChatActivity : AppCompatActivity() {
         binding.btnDrawerIncognito.setOnClickListener {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             val isIncognitoActive = vm.state.value.isIncognito
-            if (isIncognitoActive) vm.newChat() else vm.newIncognitoChat()
+            if (isIncognitoActive) vm.exitIncognito() else vm.newIncognitoChat()
         }
 
         binding.chipSuggestion1.setOnClickListener {
