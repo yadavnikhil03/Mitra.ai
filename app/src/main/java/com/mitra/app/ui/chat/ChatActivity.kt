@@ -126,8 +126,10 @@ class ChatActivity : AppCompatActivity() {
             insets
         }
         ViewCompat.setOnApplyWindowInsetsListener(binding.composerContainer) { v, insets ->
-            val bars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
-            v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, bars.bottom + 10)
+            val navBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            val imeBars = insets.getInsets(WindowInsetsCompat.Type.ime())
+            val bottomPadding = maxOf(navBars.bottom, imeBars.bottom) + 10
+            v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, bottomPadding)
             insets
         }
     }

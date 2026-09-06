@@ -10,7 +10,9 @@ import com.mitra.app.data.api.StreamingChatSource
 import com.mitra.app.data.model.Chat
 import com.mitra.app.data.model.ChatMessage
 import com.mitra.app.data.model.MessageItem
+import com.mitra.app.data.model.MessageType
 import com.mitra.app.data.model.Role
+import com.mitra.app.data.model.SupportCard
 import com.mitra.app.data.repository.AuthRepository
 import com.mitra.app.data.repository.ChatRepository
 import com.mitra.app.utils.CrisisDetector
@@ -19,6 +21,7 @@ import com.mitra.app.utils.GreetingUtils
 import com.mitra.app.utils.isOnline
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -30,8 +33,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.UUID
 import javax.inject.Inject
-
-// ── UI state ─────────────────────────────────────────────────────────────────
 
 data class ChatUiState(
     val items: List<MessageItem>  = emptyList(),
@@ -48,8 +49,6 @@ sealed class ChatEvent {
     data class ShowGlowThinking(val on: Boolean) : ChatEvent()
 }
 
-// ── ViewModel ─────────────────────────────────────────────────────────────────
-
 @HiltViewModel
 class ChatViewModel @Inject constructor(
     @ApplicationContext private val appContext: Context,
@@ -65,51 +64,52 @@ class ChatViewModel @Inject constructor(
     private val _events = MutableSharedFlow<ChatEvent>()
     val events: SharedFlow<ChatEvent> = _events.asSharedFlow()
 
-    // In-memory session state (never touches disk for incognito)
     private val chatsMap = mutableMapOf<String, Chat>()
     private var activeChat: Chat? = null
     private var uid: String? = null
     private var supportShown = false
     private var sessionMsgCount = 0
-
-    // ── Init: load chats after sign-in ────────────────────────────────────────
+    private var isInitializing = false
 
     fun onSignedIn(userId: String, idToken: String?) {
+        if (uid == userId && (isInitializing || chatsMap.isNotEmpty())) return
+        isInitializing = true
         uid = userId
         viewModelScope.launch {
-            // Fetch session key for encryption
-            if (idToken != null) {
-                try {
-                    val resp = apiService.getSessionKey("Bearer $idToken")
-                    if (resp.isSuccessful) {
-                        resp.body()?.key?.let { cryptoUtils.initKey(it) }
+            try {
+                if (idToken != null && !cryptoUtils.hasKey) {
+                    repeat(3) {
+                        try {
+                            val resp = apiService.getSessionKey("Bearer $idToken")
+                            if (resp.isSuccessful) {
+                                resp.body()?.key?.let { cryptoUtils.initKey(it); return@repeat }
+                            }
+                        } catch (_: Exception) {}
+                        if (!cryptoUtils.hasKey) delay(1200)
                     }
-                } catch (_: Exception) {}
+                }
+
+                try { apiService.health() } catch (_: Exception) {}
+
+                val loaded = chatRepo.loadChats(userId, if (cryptoUtils.hasKey) cryptoUtils else null)
+                chatsMap.putAll(loaded)
+
+                val mostRecent = chatsMap.values.maxByOrNull { it.updatedAt }
+                if (mostRecent != null) {
+                    activeChat = mostRecent
+                    checkReturnGreeting(mostRecent)
+                } else if (chatsMap.isEmpty()) {
+                    newChat()
+                    return@launch
+                }
+
+                refreshUi()
+                emit(ChatEvent.ScrollToBottom)
+            } finally {
+                isInitializing = false
             }
-
-            // Warm the backend
-            try { apiService.health() } catch (_: Exception) {}
-
-            // Load persisted chats
-            val loaded = chatRepo.loadChats(userId, if (cryptoUtils.hasKey) cryptoUtils else null)
-            chatsMap.putAll(loaded)
-
-            // Resume most-recent or create fresh
-            val mostRecent = chatsMap.values.maxByOrNull { it.updatedAt }
-            if (mostRecent != null) {
-                activeChat = mostRecent
-                checkReturnGreeting(mostRecent)
-            } else {
-                newChat()
-                return@launch
-            }
-
-            refreshUi()
-            emit(ChatEvent.ScrollToBottom)
         }
     }
-
-    // ── New chat / Incognito ─────────────────────────────────────────────────
 
     fun newChat() {
         discardIncognitoIfActive()
@@ -175,8 +175,6 @@ class ChatViewModel @Inject constructor(
         newChat()
     }
 
-    // ── Send message ─────────────────────────────────────────────────────────
-
     fun sendMessage(text: String) {
         val chat = activeChat ?: return
         if (text.isBlank() || _state.value.isBusy) return
@@ -190,18 +188,16 @@ class ChatViewModel @Inject constructor(
             return
         }
 
-        // Append user message
         val userMsg = ChatMessage(role = Role.USER, content = text)
         chat.messages.add(userMsg)
         chat.updatedAt = System.currentTimeMillis()
         sessionMsgCount++
 
-        // Crisis detection — show support card if needed
         if (!supportShown && CrisisDetector.isCrisis(text)) {
             supportShown = true
             refreshUiWithTyping()
             viewModelScope.launch {
-                kotlinx.coroutines.delay(600)
+                delay(600)
                 val safeReply = GreetingUtils.randomSafeReply()
                 val mitraMsg  = ChatMessage(role = Role.MITRA, content = safeReply)
                 chat.messages.add(mitraMsg)
@@ -222,8 +218,8 @@ class ChatViewModel @Inject constructor(
 
             try {
                 val apiMessages = chat.messages
-                    .filter { it.type != com.mitra.app.data.model.MessageType.SUPPORT }
-                    .takeLast(20)   // MAX_HISTORY = 20
+                    .filter { it.type != MessageType.SUPPORT }
+                    .takeLast(20)
                     .map { ApiMessage(role = it.role.name.lowercase(), content = it.content) }
 
                 val request  = ChatRequest(apiMessages)
@@ -231,9 +227,8 @@ class ChatViewModel @Inject constructor(
                     apiService.chat(request)
                 } catch (_: Exception) { null }
 
-                // Retry once on failure (mirrors web app behaviour)
                 if (response == null || !response.isSuccessful) {
-                    kotlinx.coroutines.delay(3500)
+                    delay(3500)
                     response = apiService.chat(request)
                 }
 
@@ -241,7 +236,6 @@ class ChatViewModel @Inject constructor(
                     throw Exception("bad response")
                 }
 
-                // Remove typing indicator, show streamed reply
                 removeTypingIndicator()
 
                 StreamingChatSource.stream(response).collect { chunk ->
@@ -263,7 +257,6 @@ class ChatViewModel @Inject constructor(
                 updateStreamingBubble(accumulated)
             } finally {
                 if (accumulated.isNotEmpty()) {
-                    // Commit streamed content as a real ChatMessage
                     val mitraMsg = ChatMessage(role = Role.MITRA, content = accumulated)
                     chat.messages.add(mitraMsg)
                     persistActive()
@@ -275,8 +268,6 @@ class ChatViewModel @Inject constructor(
             }
         }
     }
-
-    // ── Feedback / logout ────────────────────────────────────────────────────
 
     suspend fun sendFeedback(text: String): Boolean =
         chatRepo.sendFeedback(uid, text)
@@ -291,15 +282,13 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
-
     private fun checkReturnGreeting(chat: Chat) {
         val hasHistory = chat.messages.size > 1
         if (!hasHistory) return
         val gapHrs = (System.currentTimeMillis() - chat.updatedAt) / 3_600_000.0
         if (gapHrs > 3.0) {
             viewModelScope.launch {
-                kotlinx.coroutines.delay(500)
+                delay(500)
                 val returnMsg = ChatMessage(role = Role.MITRA, content = GreetingUtils.returnLine())
                 chat.messages.add(returnMsg)
                 refreshUi()
@@ -345,7 +334,7 @@ class ChatViewModel @Inject constructor(
 
     private fun refreshUiWithSupportCard() {
         val chat  = activeChat ?: return
-        val card  = com.mitra.app.data.model.SupportCard(
+        val card  = SupportCard(
             "If you are carrying something heavy right now, you do not have to handle it alone. Tele-MANAS is free, 24/7, and confidential:"
         )
         val items = chat.messages.map { MessageItem.Regular(it) } + listOf(MessageItem.Support(card))
@@ -358,10 +347,8 @@ class ChatViewModel @Inject constructor(
         _state.update { it.copy(items = items) }
     }
 
-    /** Live-update the last Mitra bubble as chunks arrive */
     private fun updateStreamingBubble(text: String) {
         val chat = activeChat ?: return
-        // Build item list: all committed messages + a streaming Mitra bubble at end
         val committed = chat.messages.map { MessageItem.Regular(it) }
         val streaming = MessageItem.Regular(
             ChatMessage(role = Role.MITRA, content = text)
