@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mitra</string>
+    <string name="app_name_ai">Mitra AI</string>
+    <string name="app_tagline">your friend</string>
+
+    <!-- Auth -->
+    <string name="sign_in">log in</string>
+    <string name="sign_up">create account</string>
+    <string name="email_hint">email</string>
+    <string name="password_hint">password</string>
+    <string name="new_here">new here? sign up</string>
+    <string name="have_account">already have an account? log in</string>
+    <string name="forgot_password">forgot password?</string>
+    <string name="auth_welcome">Sign in to save your chats and access them anytime.</string>
+    <string name="reset_email_sent">Password reset email sent. Check your inbox.</string>
+    <string name="enter_email_first">Enter your email above first, then tap this again.</string>
+    <string name="enter_both">Enter both email and password.</string>
+
+    <!-- Chat -->
+    <string name="type_anything">type whatever\'s on your mind…</string>
+    <string name="listening">listening… speak now</string>
+    <string name="new_chat">+ new chat</string>
+    <string name="incognito">incognito</string>
+    <string name="exit_incognito">exit incognito</string>
+    <string name="incognito_active_banner">incognito mode • tap to exit</string>
+    <string name="your_chats">your chats</string>
+    <string name="new_chat_title">New chat</string>
+    <string name="welcome_headline">What\'s on your mind today?</string>
+    <string name="welcome_sub">Talk, brainstorm, or just vent.</string>
+    <string name="suggestion_1_title">Brainstorm ideas</string>
+    <string name="suggestion_1_prompt">Give me 5 creative ideas for a fun weekend activity</string>
+    <string name="suggestion_2_title">Draft a message</string>
+    <string name="suggestion_2_prompt">Help me draft a thoughtful thank you note to a friend</string>
+    <string name="suggestion_3_title">Quick grounding</string>
+    <string name="suggestion_3_prompt">Guide me through a 2 minute calming grounding exercise</string>
+    <string name="suggestion_4_title">Vent and talk</string>
+    <string name="suggestion_4_prompt">I had a long day today and just want to talk for a bit</string>
+
+    <!-- Info Sheet -->
+    <string name="info_title">Privacy and info</string>
+    <string name="info_body_1">Your chats are saved to your account so they are right where you left them, even on a new device. Only you can see them. Delete a chat and it is gone permanently.</string>
+    <string name="info_body_2">To respond, your messages are processed securely. They are used only to respond to you, and conversations are never read.</string>
+    <string name="info_body_3">We track basic usage metrics to ensure Mitra is functioning well, never the content of your messages.</string>
+    <string name="info_disclaimer">Mitra is a friend to talk to, not a therapist or doctor. If things feel heavy, talking to someone you trust or calling Tele-MANAS (14416, free 24/7) can help.</string>
+    <string name="okay">okay</string>
+    <string name="suggest_something">suggest something / tell us what\'s off</string>
+    <string name="delete_all_chats">delete all my chats</string>
+    <string name="log_out">log out</string>
+
+    <!-- Feedback -->
+    <string name="feedback_title">Share your feedback</string>
+    <string name="feedback_sub">Something feel off or have an idea? Send a note.</string>
+    <string name="feedback_hint">type your thought here…</string>
+    <string name="send_it">send it</string>
+    <string name="feedback_thanks">Got it, thank you.</string>
+    <string name="feedback_fail">Could not send that right now. Please try again.</string>
+
+    <!-- Errors -->
+    <string name="offline_msg">Your internet connection dropped. Your message is safe here, so send it once you are back online.</string>
+    <string name="error_generic">Having trouble connecting right now. Please try again in a moment.</string>
+
+    <!-- Delete confirm -->
+    <string name="delete_all_title">Delete all chats?</string>
+    <string name="delete_chat_confirm">Delete this chat? This cannot be undone.</string>
+    <string name="delete_all_confirm">Delete ALL your chats forever? This cannot be undone.</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Content descriptions -->
+    <string name="cd_send">Send message</string>
+    <string name="cd_mic">Voice input</string>
+    <string name="cd_chats">Your chats</string>
+    <string name="cd_info">How this works</string>
+    <string name="cd_delete_chat">Delete chat</string>
+    <string name="cd_tts">Voice reply</string>
+    <string name="tts_on">Voice replies turned ON</string>
+    <string name="tts_off">Voice replies turned OFF</string>
+</resources>

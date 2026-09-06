@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 8-point grid system -->
+    <dimen name="space_4">4dp</dimen>
+    <dimen name="space_8">8dp</dimen>
+    <dimen name="space_12">12dp</dimen>
+    <dimen name="space_16">16dp</dimen>
+    <dimen name="space_20">20dp</dimen>
+    <dimen name="space_24">24dp</dimen>
+    <dimen name="space_32">32dp</dimen>
+    <dimen name="space_48">48dp</dimen>
+    <dimen name="space_64">64dp</dimen>
+
+    <!-- Component sizes -->
+    <dimen name="fab_size">52dp</dimen>
+    <dimen name="icon_btn_size">40dp</dimen>
+    <dimen name="bubble_radius">18dp</dimen>
+    <dimen name="bubble_tail_radius">6dp</dimen>
+    <dimen name="card_radius">20dp</dimen>
+    <dimen name="auth_card_radius">24dp</dimen>
+    <dimen name="input_radius">22dp</dimen>
+    <dimen name="chip_radius">100dp</dimen>
+
+    <!-- Typography -->
+    <dimen name="text_xs">11sp</dimen>
+    <dimen name="text_sm">13sp</dimen>
+    <dimen name="text_body">16sp</dimen>
+    <dimen name="text_lg">18sp</dimen>
+    <dimen name="text_xl">22sp</dimen>
+    <dimen name="text_2xl">28sp</dimen>
+
+    <!-- Chat layout -->
+    <dimen name="thread_padding_h">16dp</dimen>
+    <dimen name="thread_padding_v">8dp</dimen>
+    <dimen name="bubble_padding_h">14dp</dimen>
+    <dimen name="bubble_padding_v">10dp</dimen>
+    <dimen name="bubble_max_width_ratio">0.82</dimen>
+    <dimen name="composer_padding_h">14dp</dimen>
+    <dimen name="composer_padding_v">10dp</dimen>
+</resources>

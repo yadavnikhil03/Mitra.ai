@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_support_card"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="14dp"
+    android:layout_marginVertical="4dp"
+    android:elevation="2dp">
+
+    <TextView
+        android:id="@+id/tvSupportText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_primary"
+        android:textSize="14sp"
+        android:lineSpacingMultiplier="1.55" />
+
+    <TextView
+        android:id="@+id/tvHelplineNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dial 14416"
+        android:textColor="@color/ember_core"
+        android:textSize="18sp"
+        android:fontFamily="serif"
+        android:textStyle="italic"
+        android:paddingTop="8dp"
+        android:autoLink="phone" />
+
+</LinearLayout>

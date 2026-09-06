@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Mitra Core Palette — mirrors the web CSS variables exactly -->
+    <color name="night">#1C1014</color>
+    <color name="night_2">#2A1820</color>
+    <color name="night_edge">#120809</color>
+    <color name="ember_core">#FFD3A0</color>
+    <color name="ember">#FFB877</color>
+    <color name="ember_deep">#F0925A</color>
+    <color name="rose">#E89BA8</color>
+    <color name="text_primary">#F5ECE4</color>
+    <color name="muted">#B79E95</color>
+    <color name="faint">#806560</color>
+
+    <!-- Semi-transparent variants -->
+    <color name="line">#17FFECDE</color>          <!-- rgba(255,236,222,.09) -->
+    <color name="line_warm">#47FFB877</color>     <!-- rgba(255,184,119,.28) -->
+    <color name="glass">#8C1C1014</color>         <!-- rgba(28,16,20,.55) -->
+    <color name="surface_card">#12FFECDE</color>  <!-- rgba(255,236,222,.07) -->
+    <color name="user_bubble">#33FFB066</color>   <!-- rgba(255,176,102,.20) -->
+    <color name="mitra_bubble">#13FFECDE</color>  <!-- rgba(255,236,222,.075) -->
+    <color name="auth_input_bg">#0CFFFFFF</color> <!-- rgba(255,255,255,.045) -->
+    <color name="input_focused">#0DFFB066</color> <!-- rgba(255,176,102,.05) -->
+
+    <!-- Incognito -->
+    <color name="incognito_bg">#1A1A2E</color>
+    <color name="incognito_accent">#6C63FF</color>
+
+    <!-- Status bar / system -->
+    <color name="status_bar">#120809</color>
+
+    <!-- Support card -->
+    <color name="support_bg">#1FFFB877</color>    <!-- rgba(255,184,119,.12) -->
+    <color name="crisis_rose_bg">#1FE89BA8</color>
+    <color name="crisis_rose_border">#66E89BA8</color>
+</resources>

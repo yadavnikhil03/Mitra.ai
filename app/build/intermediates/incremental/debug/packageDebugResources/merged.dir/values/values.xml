@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="auth_input_bg">#0CFFFFFF</color>
+    <color name="crisis_rose_bg">#1FE89BA8</color>
+    <color name="crisis_rose_border">#66E89BA8</color>
+    <color name="ember">#FFB877</color>
+    <color name="ember_core">#FFD3A0</color>
+    <color name="ember_deep">#F0925A</color>
+    <color name="faint">#806560</color>
+    <color name="glass">#8C1C1014</color>
+    <color name="incognito_accent">#6C63FF</color>
+    <color name="incognito_bg">#1A1A2E</color>
+    <color name="input_focused">#0DFFB066</color>
+    <color name="line">#17FFECDE</color>
+    <color name="line_warm">#47FFB877</color>
+    <color name="mitra_bubble">#13FFECDE</color>
+    <color name="muted">#B79E95</color>
+    <color name="night">#1C1014</color>
+    <color name="night_2">#2A1820</color>
+    <color name="night_edge">#120809</color>
+    <color name="rose">#E89BA8</color>
+    <color name="status_bar">#120809</color>
+    <color name="support_bg">#1FFFB877</color>
+    <color name="surface_card">#12FFECDE</color>
+    <color name="text_primary">#F5ECE4</color>
+    <color name="user_bubble">#33FFB066</color>
+    <dimen name="auth_card_radius">24dp</dimen>
+    <dimen name="bubble_max_width_ratio">0.82</dimen>
+    <dimen name="bubble_padding_h">14dp</dimen>
+    <dimen name="bubble_padding_v">10dp</dimen>
+    <dimen name="bubble_radius">18dp</dimen>
+    <dimen name="bubble_tail_radius">6dp</dimen>
+    <dimen name="card_radius">20dp</dimen>
+    <dimen name="chip_radius">100dp</dimen>
+    <dimen name="composer_padding_h">14dp</dimen>
+    <dimen name="composer_padding_v">10dp</dimen>
+    <dimen name="fab_size">52dp</dimen>
+    <dimen name="icon_btn_size">40dp</dimen>
+    <dimen name="input_radius">22dp</dimen>
+    <dimen name="space_12">12dp</dimen>
+    <dimen name="space_16">16dp</dimen>
+    <dimen name="space_20">20dp</dimen>
+    <dimen name="space_24">24dp</dimen>
+    <dimen name="space_32">32dp</dimen>
+    <dimen name="space_4">4dp</dimen>
+    <dimen name="space_48">48dp</dimen>
+    <dimen name="space_64">64dp</dimen>
+    <dimen name="space_8">8dp</dimen>
+    <dimen name="text_2xl">28sp</dimen>
+    <dimen name="text_body">16sp</dimen>
+    <dimen name="text_lg">18sp</dimen>
+    <dimen name="text_sm">13sp</dimen>
+    <dimen name="text_xl">22sp</dimen>
+    <dimen name="text_xs">11sp</dimen>
+    <dimen name="thread_padding_h">16dp</dimen>
+    <dimen name="thread_padding_v">8dp</dimen>
+    <string name="app_name">Mitra</string>
+    <string name="app_name_ai">Mitra AI</string>
+    <string name="app_tagline">your friend</string>
+    <string name="auth_welcome">Sign in to save your chats and access them anytime.</string>
+    <string name="cancel">Cancel</string>
+    <string name="cd_chats">Your chats</string>
+    <string name="cd_delete_chat">Delete chat</string>
+    <string name="cd_info">How this works</string>
+    <string name="cd_mic">Voice input</string>
+    <string name="cd_send">Send message</string>
+    <string name="cd_tts">Voice reply</string>
+    <string name="delete">Delete</string>
+    <string name="delete_all_chats">delete all my chats</string>
+    <string name="delete_all_confirm">Delete ALL your chats forever? This cannot be undone.</string>
+    <string name="delete_all_title">Delete all chats?</string>
+    <string name="delete_chat_confirm">Delete this chat? This cannot be undone.</string>
+    <string name="email_hint">email</string>
+    <string name="enter_both">Enter both email and password.</string>
+    <string name="enter_email_first">Enter your email above first, then tap this again.</string>
+    <string name="error_generic">Having trouble connecting right now. Please try again in a moment.</string>
+    <string name="exit_incognito">exit incognito</string>
+    <string name="feedback_fail">Could not send that right now. Please try again.</string>
+    <string name="feedback_hint">type your thought here…</string>
+    <string name="feedback_sub">Something feel off or have an idea? Send a note.</string>
+    <string name="feedback_thanks">Got it, thank you.</string>
+    <string name="feedback_title">Share your feedback</string>
+    <string name="forgot_password">forgot password?</string>
+    <string name="gcm_defaultSenderId" translatable="false">1095624201719</string>
+    <string name="google_api_key" translatable="false">AIzaSyBxO9Be3Gln4k6RMnFNMM8JCLwBKa_v9ZQ</string>
+    <string name="google_app_id" translatable="false">1:1095624201719:android:REPLACE_WITH_YOUR_APP_SHA</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBxO9Be3Gln4k6RMnFNMM8JCLwBKa_v9ZQ</string>
+    <string name="google_storage_bucket" translatable="false">mitra-chat-fdc4a.firebasestorage.app</string>
+    <string name="have_account">already have an account? log in</string>
+    <string name="incognito">incognito</string>
+    <string name="incognito_active_banner">incognito mode • tap to exit</string>
+    <string name="info_body_1">Your chats are saved to your account so they are right where you left them, even on a new device. Only you can see them. Delete a chat and it is gone permanently.</string>
+    <string name="info_body_2">To respond, your messages are processed securely. They are used only to respond to you, and conversations are never read.</string>
+    <string name="info_body_3">We track basic usage metrics to ensure Mitra is functioning well, never the content of your messages.</string>
+    <string name="info_disclaimer">Mitra is a friend to talk to, not a therapist or doctor. If things feel heavy, talking to someone you trust or calling Tele-MANAS (14416, free 24/7) can help.</string>
+    <string name="info_title">Privacy and info</string>
+    <string name="listening">listening… speak now</string>
+    <string name="log_out">log out</string>
+    <string name="new_chat">+ new chat</string>
+    <string name="new_chat_title">New chat</string>
+    <string name="new_here">new here? sign up</string>
+    <string name="offline_msg">Your internet connection dropped. Your message is safe here, so send it once you are back online.</string>
+    <string name="okay">okay</string>
+    <string name="password_hint">password</string>
+    <string name="project_id" translatable="false">mitra-chat-fdc4a</string>
+    <string name="reset_email_sent">Password reset email sent. Check your inbox.</string>
+    <string name="send_it">send it</string>
+    <string name="sign_in">log in</string>
+    <string name="sign_up">create account</string>
+    <string name="suggest_something">suggest something / tell us what\'s off</string>
+    <string name="suggestion_1_prompt">Give me 5 creative ideas for a fun weekend activity</string>
+    <string name="suggestion_1_title">Brainstorm ideas</string>
+    <string name="suggestion_2_prompt">Help me draft a thoughtful thank you note to a friend</string>
+    <string name="suggestion_2_title">Draft a message</string>
+    <string name="suggestion_3_prompt">Guide me through a 2 minute calming grounding exercise</string>
+    <string name="suggestion_3_title">Quick grounding</string>
+    <string name="suggestion_4_prompt">I had a long day today and just want to talk for a bit</string>
+    <string name="suggestion_4_title">Vent and talk</string>
+    <string name="tts_off">Voice replies turned OFF</string>
+    <string name="tts_on">Voice replies turned ON</string>
+    <string name="type_anything">type whatever\'s on your mind…</string>
+    <string name="welcome_headline">What\'s on your mind today?</string>
+    <string name="welcome_sub">Talk, brainstorm, or just vent.</string>
+    <string name="your_chats">your chats</string>
+    <style name="ShapeAppearance.Mitra.BottomSheet" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">22dp</item>
+        <item name="cornerSizeTopRight">22dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+    <style name="Theme.Mitra" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/ember_core</item>
+        <item name="colorOnPrimary">@color/night_edge</item>
+        <item name="colorPrimaryContainer">@color/ember</item>
+        <item name="colorOnPrimaryContainer">@color/night_edge</item>
+        <item name="colorSecondary">@color/ember_deep</item>
+        <item name="colorOnSecondary">@color/night_edge</item>
+        <item name="colorTertiary">@color/rose</item>
+        <item name="colorOnTertiary">@color/night_edge</item>
+        <item name="colorSurface">@color/night_2</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorSurfaceVariant">@color/night_2</item>
+        <item name="colorOnSurfaceVariant">@color/muted</item>
+        <item name="colorError">@color/rose</item>
+        <item name="colorOnError">@color/night_edge</item>
+        <item name="colorOutline">@color/faint</item>
+        <item name="android:colorBackground">@color/night</item>
+        <item name="android:windowBackground">@color/night</item>
+        <item name="android:statusBarColor">@color/night_edge</item>
+        <item name="android:navigationBarColor">@color/night_edge</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="bottomSheetStyle">@style/Widget.Mitra.BottomSheet</item>
+        <item name="bottomSheetDialogTheme">@style/Theme.Mitra.BottomSheetDialog</item>
+    </style>
+    <style name="Theme.Mitra.BottomSheetDialog" parent="Theme.Material3.Dark.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/Widget.Mitra.BottomSheet</item>
+        <item name="android:statusBarColor">@color/night_edge</item>
+        <item name="android:navigationBarColor">@color/night_2</item>
+    </style>
+    <style name="Theme.Mitra.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/night_edge</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_logo</item>
+        <item name="windowSplashScreenAnimationDuration">800</item>
+        <item name="postSplashScreenTheme">@style/Theme.Mitra</item>
+        <item name="android:statusBarColor">@color/night_edge</item>
+        <item name="android:navigationBarColor">@color/night_edge</item>
+    </style>
+    <style name="Widget.Mitra.BottomSheet" parent="Widget.Material3.BottomSheet">
+        <item name="backgroundTint">@color/night_2</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Mitra.BottomSheet</item>
+    </style>
+    <style name="Widget.Mitra.Button.Ghost" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/muted</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+    <style name="Widget.Mitra.Button.Primary" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/ember_core</item>
+        <item name="android:textColor">@color/night_edge</item>
+        <item name="cornerRadius">100dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="elevation">0dp</item>
+    </style>
+</resources>

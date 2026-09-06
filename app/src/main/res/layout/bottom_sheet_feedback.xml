@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_bottom_sheet"
+    android:paddingTop="8dp"
+    android:paddingBottom="24dp">
+
+    <!-- Drag handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:background="@drawable/drag_handle"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/feedback_title"
+        android:textSize="22sp"
+        android:textColor="@color/text_primary"
+        android:fontFamily="serif"
+        android:textStyle="italic"
+        android:paddingHorizontal="22dp"
+        android:layout_marginBottom="6dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/feedback_sub"
+        android:textColor="@color/muted"
+        android:textSize="14sp"
+        android:lineSpacingMultiplier="1.5"
+        android:paddingHorizontal="22dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Text area -->
+    <EditText
+        android:id="@+id/etFeedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_auth_input"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="14dp"
+        android:hint="@string/feedback_hint"
+        android:textColorHint="@color/faint"
+        android:textColor="@color/text_primary"
+        android:textSize="15sp"
+        android:inputType="textMultiLine|textCapSentences"
+        android:minLines="4"
+        android:maxLines="8"
+        android:maxLength="2000"
+        android:gravity="top|start"
+        android:layout_marginHorizontal="22dp"
+        android:layout_marginBottom="10dp" />
+
+    <!-- Status message -->
+    <TextView
+        android:id="@+id/tvFeedbackStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:textColor="@color/ember_core"
+        android:visibility="gone"
+        android:layout_marginHorizontal="22dp"
+        android:layout_marginBottom="10dp" />
+
+    <!-- Send button -->
+    <Button
+        android:id="@+id/btnSendFeedback"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/send_it"
+        android:background="@drawable/bg_cta_button"
+        android:textColor="@color/night_edge"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginHorizontal="22dp"
+        android:layout_marginBottom="4dp"
+        android:elevation="4dp"
+        android:stateListAnimator="@null" />
+
+    <Button
+        android:id="@+id/btnClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="close"
+        android:textColor="@color/muted"
+        android:textSize="14sp"
+        android:background="@null"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="4dp" />
+
+</LinearLayout>

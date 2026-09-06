@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="start"
+    android:paddingVertical="4dp">
+
+    <LinearLayout
+        android:id="@+id/msgContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_bubble_mitra"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="10dp"
+        android:layout_marginEnd="56dp"
+        android:elevation="2dp">
+
+        <TextView
+            android:id="@+id/tvMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:textSize="15.5sp"
+            android:lineSpacingMultiplier="1.5"
+            android:textIsSelectable="true" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_gravity="end"
+            android:layout_marginTop="4dp">
+
+            <ImageButton
+                android:id="@+id/btnSpeak"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@null"
+                android:src="@drawable/ic_volume_up"
+                android:padding="2dp"
+                android:contentDescription="@string/cd_tts"
+                android:layout_marginEnd="6dp" />
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="@color/faint" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

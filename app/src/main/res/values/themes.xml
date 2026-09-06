@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Mitra" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/ember_core</item>
+        <item name="colorOnPrimary">@color/night_edge</item>
+        <item name="colorPrimaryContainer">@color/ember</item>
+        <item name="colorOnPrimaryContainer">@color/night_edge</item>
+        <item name="colorSecondary">@color/ember_deep</item>
+        <item name="colorOnSecondary">@color/night_edge</item>
+        <item name="colorTertiary">@color/rose</item>
+        <item name="colorOnTertiary">@color/night_edge</item>
+        <item name="colorSurface">@color/night_2</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorSurfaceVariant">@color/night_2</item>
+        <item name="colorOnSurfaceVariant">@color/muted</item>
+        <item name="colorError">@color/rose</item>
+        <item name="colorOnError">@color/night_edge</item>
+        <item name="colorOutline">@color/faint</item>
+        <item name="android:colorBackground">@color/night</item>
+        <item name="android:windowBackground">@color/night</item>
+        <item name="android:statusBarColor">@color/night_edge</item>
+        <item name="android:navigationBarColor">@color/night_edge</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="bottomSheetStyle">@style/Widget.Mitra.BottomSheet</item>
+        <item name="bottomSheetDialogTheme">@style/Theme.Mitra.BottomSheetDialog</item>
+    </style>
+
+    <style name="Theme.Mitra.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/night_edge</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_logo</item>
+        <item name="windowSplashScreenAnimationDuration">800</item>
+        <item name="postSplashScreenTheme">@style/Theme.Mitra</item>
+        <item name="android:statusBarColor">@color/night_edge</item>
+        <item name="android:navigationBarColor">@color/night_edge</item>
+    </style>
+
+    <style name="Theme.Mitra.BottomSheetDialog" parent="Theme.Material3.Dark.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/Widget.Mitra.BottomSheet</item>
+        <item name="android:statusBarColor">@color/night_edge</item>
+        <item name="android:navigationBarColor">@color/night_2</item>
+    </style>
+
+    <style name="Widget.Mitra.BottomSheet" parent="Widget.Material3.BottomSheet">
+        <item name="backgroundTint">@color/night_2</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Mitra.BottomSheet</item>
+    </style>
+
+    <style name="ShapeAppearance.Mitra.BottomSheet" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">22dp</item>
+        <item name="cornerSizeTopRight">22dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <style name="Widget.Mitra.Button.Primary" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/ember_core</item>
+        <item name="android:textColor">@color/night_edge</item>
+        <item name="cornerRadius">100dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="Widget.Mitra.Button.Ghost" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/muted</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+</resources>
