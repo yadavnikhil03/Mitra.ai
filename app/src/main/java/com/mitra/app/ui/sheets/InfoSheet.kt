@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mitra.app.R
 import com.mitra.app.databinding.BottomSheetInfoBinding
@@ -33,6 +34,18 @@ class InfoSheet(
             onDeleteAll()
         }
         binding.btnLogout.setOnClickListener { dismiss(); onLogout() }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.let { d ->
+            val sheet = d.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            sheet?.let {
+                val behavior = BottomSheetBehavior.from(it)
+                behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                behavior.skipCollapsed = true
+            }
+        }
     }
 
     override fun onDestroyView() { super.onDestroyView(); _binding = null }
