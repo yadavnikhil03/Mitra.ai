@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.svg" alt="Mitra Header Banner" width="100%" />
+</p>
+
 # Mitra (Beta)
 
 > **Note:** This project is currently in **Beta** and under active development. Features, APIs, and UI are actively being updated.
