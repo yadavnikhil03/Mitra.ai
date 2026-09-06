@@ -49,6 +49,12 @@ Mitra is an Android companion app built using native Kotlin and modern Android a
 
 ---
 
+## Beta Releases
+
+- **Downloads**: Download pre-built APKs directly from the repository's [Releases](../../releases) tab.
+
+---
+
 ## License
 
 Licensed under the [GNU General Public License v3.0](LICENSE).
