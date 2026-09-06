@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mitra.app.R
@@ -27,6 +29,11 @@ class InfoSheet(
 
     override fun onViewCreated(view: View, state: Bundle?) {
         super.onViewCreated(view, state)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.containerInfo) { v, insets ->
+            val navBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, navBars.bottom + 36)
+            insets
+        }
         binding.btnOkay.setOnClickListener { dismiss() }
         binding.btnFeedback.setOnClickListener { dismiss(); onFeedback() }
         binding.btnDeleteAllChats.setOnClickListener {
