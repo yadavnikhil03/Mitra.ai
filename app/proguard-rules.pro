@@ -19,8 +19,10 @@
 -keep class dagger.hilt.** { *; }
 -keep class javax.inject.** { *; }
 
-# Room
+# Room & WorkManager
 -keep class androidx.room.** { *; }
+-keep class androidx.work.** { *; }
+-keep class com.mitra.app.worker.** { *; }
 
 # Suppress missing class warnings for optional deps
 -dontwarn com.google.errorprone.**

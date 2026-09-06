@@ -74,6 +74,10 @@ class ChatActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission()
     ) { granted -> if (granted) startVoice() }
 
+    private val notificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { }
+
     private var glowBreathAnimator: ValueAnimator? = null
     private var isThinking = false
 
@@ -92,6 +96,8 @@ class ChatActivity : AppCompatActivity() {
         setupHeaderButtons()
         startGlowBreath()
         binding.particleView.start()
+        
+        requestNotificationPermissionAndSchedule()
 
         val user = auth.currentUser
         if (user == null) {
@@ -109,14 +115,58 @@ class ChatActivity : AppCompatActivity() {
     private fun initTts() {
         tts = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
-                tts?.language = Locale.ENGLISH
+                val t = tts ?: return@TextToSpeech
+                t.language = Locale.ENGLISH
+                t.setPitch(1.03f)
+                t.setSpeechRate(0.94f)
+
+                val hdVoice = t.voices?.find { v ->
+                    val name = v.name.lowercase()
+                    v.locale.language == "en" &&
+                    (name.contains("network") || name.contains("sfg") || name.contains("ena") || name.contains("iog") || name.contains("tpf"))
+                }
+                if (hdVoice != null) {
+                    t.voice = hdVoice
+                }
             }
         }
     }
 
     private fun speak(text: String) {
         if (text.isBlank()) return
-        tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "MitraTTS")
+        val t = tts ?: return
+        t.stop()
+
+        val cleanText = text
+            .replace(Regex("[*_~`#]"), "")
+            .replace("...", "…")
+            .replace("--", "—")
+
+        val clauses = cleanText.split(Regex("(?<=[.,?!;…—\n])\\s+"))
+        for ((idx, clause) in clauses.withIndex()) {
+            val trimmed = clause.trim()
+            if (trimmed.isEmpty()) continue
+
+            val sentencePitch = when {
+                trimmed.endsWith("?") -> 1.08f
+                trimmed.endsWith("!") -> 1.06f
+                else -> 1.03f
+            }
+            t.setPitch(sentencePitch)
+            t.setSpeechRate(0.94f)
+
+            t.speak(trimmed, TextToSpeech.QUEUE_ADD, null, "MitraTTS_$idx")
+
+            val pauseMs = when {
+                trimmed.endsWith("…") || trimmed.endsWith("—") -> 620L
+                trimmed.endsWith("?") -> 520L
+                trimmed.endsWith(".") || trimmed.endsWith("!") -> 420L
+                trimmed.endsWith(",") || trimmed.endsWith(";") -> 280L
+                trimmed.contains("\n") -> 500L
+                else -> 180L
+            }
+            t.playSilentUtterance(pauseMs, TextToSpeech.QUEUE_ADD, "Pause_$idx")
+        }
     }
 
     private fun applyWindowInsets() {
@@ -323,7 +373,12 @@ class ChatActivity : AppCompatActivity() {
                     when (event) {
                         is ChatEvent.ScrollToBottom -> {
                             val last = adapter.itemCount - 1
-                            if (last >= 0) binding.recyclerMessages.smoothScrollToPosition(last)
+                            if (last >= 0) {
+                                val canScrollDown = binding.recyclerMessages.canScrollVertically(1)
+                                if (!canScrollDown || adapter.itemCount <= 3) {
+                                    binding.recyclerMessages.scrollToPosition(last)
+                                }
+                            }
                         }
                         is ChatEvent.NavigateToLogin -> goToLogin()
                         is ChatEvent.ShowToast -> Toast.makeText(this@ChatActivity, event.msg, Toast.LENGTH_LONG).show()
@@ -508,6 +563,30 @@ class ChatActivity : AppCompatActivity() {
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+    }
+
+    private fun requestNotificationPermissionAndSchedule() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+
+        val periodicRequest = androidx.work.PeriodicWorkRequestBuilder<com.mitra.app.worker.ProactiveCheckInWorker>(
+            12, java.util.concurrent.TimeUnit.HOURS
+        ).build()
+        
+        androidx.work.WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "ProactiveCheckIn",
+            androidx.work.ExistingPeriodicWorkPolicy.KEEP,
+            periodicRequest
+        )
+        
+        val testRequest = androidx.work.OneTimeWorkRequestBuilder<com.mitra.app.worker.ProactiveCheckInWorker>()
+            .setInitialDelay(5, java.util.concurrent.TimeUnit.SECONDS)
+            .build()
+        androidx.work.WorkManager.getInstance(this).enqueue(testRequest)
     }
 
     private inner class DrawerChatAdapter(
