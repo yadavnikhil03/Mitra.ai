@@ -47,6 +47,7 @@ import com.mitra.app.ui.sheets.ConfirmDeleteSheet
 import com.mitra.app.ui.sheets.FeedbackSheet
 import com.mitra.app.ui.sheets.InfoSheet
 import com.mitra.app.utils.toRelativeDate
+import com.mitra.app.worker.ProactiveCheckInScheduler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -572,21 +573,7 @@ class ChatActivity : AppCompatActivity() {
                 notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
-
-        val periodicRequest = androidx.work.PeriodicWorkRequestBuilder<com.mitra.app.worker.ProactiveCheckInWorker>(
-            12, java.util.concurrent.TimeUnit.HOURS
-        ).build()
-        
-        androidx.work.WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-            "ProactiveCheckIn",
-            androidx.work.ExistingPeriodicWorkPolicy.KEEP,
-            periodicRequest
-        )
-        
-        val testRequest = androidx.work.OneTimeWorkRequestBuilder<com.mitra.app.worker.ProactiveCheckInWorker>()
-            .setInitialDelay(5, java.util.concurrent.TimeUnit.SECONDS)
-            .build()
-        androidx.work.WorkManager.getInstance(this).enqueue(testRequest)
+        ProactiveCheckInScheduler.schedule(this)
     }
 
     private inner class DrawerChatAdapter(

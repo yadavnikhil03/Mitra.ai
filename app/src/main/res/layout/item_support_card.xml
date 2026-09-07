@@ -4,29 +4,34 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/bg_support_card"
-    android:paddingHorizontal="16dp"
-    android:paddingVertical="14dp"
-    android:layout_marginVertical="4dp"
+    android:paddingHorizontal="18dp"
+    android:paddingVertical="16dp"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="6dp"
     android:elevation="2dp">
 
     <TextView
         android:id="@+id/tvSupportText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/text_primary"
+        android:textColor="#F5ECE4"
         android:textSize="14sp"
-        android:lineSpacingMultiplier="1.55" />
+        android:lineSpacingMultiplier="1.5" />
 
     <TextView
         android:id="@+id/tvHelplineNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="dial 14416"
-        android:textColor="@color/ember_core"
-        android:textSize="18sp"
-        android:fontFamily="serif"
-        android:textStyle="italic"
-        android:paddingTop="8dp"
-        android:autoLink="phone" />
+        android:text="📞 Call Tele-MANAS (14416)"
+        android:textColor="#120809"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif-medium"
+        android:textStyle="bold"
+        android:background="@drawable/bg_cta_button"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="11dp"
+        android:layout_marginTop="14dp"
+        android:clickable="true"
+        android:focusable="true" />
 
 </LinearLayout>

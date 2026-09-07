@@ -39,12 +39,12 @@
 
     <ImageButton
         android:id="@+id/btnDeleteChat"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_delete"
-        android:padding="6dp"
+        android:padding="12dp"
         android:contentDescription="@string/cd_delete_chat"
-        android:layout_marginStart="8dp" />
+        android:layout_marginStart="4dp" />
 
 </LinearLayout>

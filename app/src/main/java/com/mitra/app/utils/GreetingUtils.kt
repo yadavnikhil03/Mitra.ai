@@ -48,10 +48,10 @@ object GreetingUtils {
     ).random()
 
     val safeReplies: List<String> = listOf(
-        "I am glad you told me that, and I am right here. You matter, and even when things feel overwhelming, feelings change. Please, if it feels too heavy, talk to someone you trust or call Tele-MANAS at 14416 (free, 24/7). I am here with you. What is making things feel so heavy today?",
-        "Thank you for saying that out loud instead of keeping it inside. I am here with you. The pain you are feeling is real, but you do not have to handle it alone. Please reach out to someone you trust or call Tele-MANAS at 14416 (free, 24/7). I am right here. How long have you felt this way?",
-        "I am right here with you. I know things feel unbearable right now, but please do not carry this alone tonight. Speak with someone you trust or call Tele-MANAS at 14416 (free, 24/7). I am staying right here with you. What happened today?",
-        "Thank you for telling me. This is not something you have to carry by yourself. Please talk to someone close to you today or call Tele-MANAS at 14416 (free, 24/7). I am here. What happened today?"
+        "I am glad you told me that, and I am right here. You matter, and even when things feel overwhelming, feelings change. I am here with you. What is making things feel so heavy today?",
+        "Thank you for saying that out loud instead of keeping it inside. I am here with you. The pain you are feeling is real, but you do not have to handle it alone. I am right here. How long have you felt this way?",
+        "I am right here with you. I know things feel unbearable right now, but please do not carry this alone. I am staying right here with you. What happened today?",
+        "Thank you for telling me. This is not something you have to carry by yourself. I am here. What happened today?"
     )
 
     fun randomSafeReply(): String = safeReplies.random()

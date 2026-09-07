@@ -145,7 +145,7 @@ class MessageAdapter(
         fun bind(text: String) {
             b.tvSupportText.text = text
             b.tvHelplineNumber.setOnClickListener {
-                val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:14416"))
+                val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:+9114416"))
                 b.root.context.startActivity(intent)
             }
             popIn(b.root)

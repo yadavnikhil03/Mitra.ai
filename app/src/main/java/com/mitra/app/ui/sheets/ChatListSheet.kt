@@ -17,6 +17,8 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 
 class ChatListSheet(
     private val chats: List<Chat>,
@@ -40,6 +42,12 @@ class ChatListSheet(
 
     override fun onViewCreated(view: View, state: Bundle?) {
         super.onViewCreated(view, state)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val navBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, navBars.bottom + 16)
+            insets
+        }
 
         val adapter = ChatRowAdapter(
             chats       = chats.toMutableList(),

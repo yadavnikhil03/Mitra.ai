@@ -14,6 +14,7 @@
         android:background="@drawable/bg_bubble_mitra"
         android:paddingHorizontal="14dp"
         android:paddingVertical="10dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="56dp"
         android:elevation="2dp">
 
