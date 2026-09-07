@@ -1,24 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Mitra logo mark — glowing ember dot -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="108dp"
-    android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
-    <!-- Outer glow ring -->
+    android:width="128dp"
+    android:height="128dp"
+    android:viewportWidth="128"
+    android:viewportHeight="128">
+
+    <!-- Background Halo / Mandala Ring -->
     <path
-        android:pathData="M54,54m-38,0a38,38 0,1 1,76 0a38,38 0,1 1,-76 0"
-        android:fillColor="#1AFFD3A0" />
-    <!-- Middle glow -->
+        android:pathData="M64,64m-58,0a58,58 0,1 1,116 0a58,58 0,1 1,-116 0"
+        android:fillColor="#12E29578" />
+
     <path
-        android:pathData="M54,54m-26,0a26,26 0,1 1,52 0a26,26 0,1 1,-52 0"
-        android:fillColor="#33FFB877" />
-    <!-- Core dot -->
+        android:pathData="M64,64m-50,0a50,50 0,1 1,100 0a50,50 0,1 1,-100 0"
+        android:strokeWidth="1.5"
+        android:strokeColor="#33E29578"
+        android:fillColor="#00000000" />
+
+    <!-- Lotus Base / Diya Bowl -->
     <path
-        android:pathData="M54,54m-12,0a12,12 0,1 1,24 0a12,12 0,1 1,-24 0"
-        android:fillColor="#FFD3A0" />
-    <!-- Tiny inner highlight -->
+        android:pathData="M38,78 C42,92 86,92 90,78 C80,84 48,84 38,78 Z"
+        android:fillColor="#DDA15E" />
+
+    <!-- Left Lotus Petal -->
     <path
-        android:pathData="M50,50m-4,0a4,4 0,1 1,8 0a4,4 0,1 1,-8 0"
-        android:fillColor="#FFFFFFFF" />
+        android:pathData="M38,78 C24,68 28,48 46,58 C38,68 40,74 38,78 Z"
+        android:fillColor="#E29578" />
+
+    <!-- Right Lotus Petal -->
+    <path
+        android:pathData="M90,78 C104,68 100,48 82,58 C90,68 88,74 90,78 Z"
+        android:fillColor="#E29578" />
+
+    <!-- Center Lotus Base Petal -->
+    <path
+        android:pathData="M64,86 C50,86 42,74 42,66 C56,70 72,70 86,66 C86,74 78,86 64,86 Z"
+        android:fillColor="#BC6C25" />
+
+    <!-- Inner Diya Flame (Inner Light) -->
+    <path
+        android:pathData="M64,30 C64,30 76,52 76,62 C76,70 70,74 64,74 C58,74 52,70 52,62 C52,52 64,30 64,30 Z"
+        android:fillColor="#F4A261" />
+
+    <!-- Flame Core Glow -->
+    <path
+        android:pathData="M64,40 C64,40 71,55 71,61 C71,67 67,70 64,70 C61,70 57,67 57,61 C57,55 64,40 64,40 Z"
+        android:fillColor="#F7F4F0" />
+
 </vector>

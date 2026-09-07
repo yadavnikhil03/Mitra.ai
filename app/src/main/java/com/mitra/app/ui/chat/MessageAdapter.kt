@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mitra.app.data.model.ChatMessage
 import com.mitra.app.data.model.MessageItem
+import com.mitra.app.data.model.MessageType
 import com.mitra.app.data.model.Role
 import com.mitra.app.databinding.ItemMessageMitraBinding
 import com.mitra.app.databinding.ItemMessageUserBinding
@@ -84,6 +85,18 @@ class MessageAdapter(
             b.tvMessage.text = msg.content
             b.tvTime.text = msg.timestamp.toFormattedTime()
             b.btnSpeak.setOnClickListener { onSpeak?.invoke(msg.content) }
+
+            val isHelpline = msg.content.contains("14416") || msg.type == MessageType.SUPPORT
+            if (isHelpline) {
+                b.btnHelplineCall.visibility = View.VISIBLE
+                b.btnHelplineCall.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:+9114416"))
+                    b.root.context.startActivity(intent)
+                }
+            } else {
+                b.btnHelplineCall.visibility = View.GONE
+            }
+
             b.msgContainer.setOnLongClickListener { v ->
                 v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                 copyToClipboard(b.root.context, msg.content)

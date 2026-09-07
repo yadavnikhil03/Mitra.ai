@@ -95,9 +95,7 @@ class ChatActivity : AppCompatActivity() {
         setupDrawerRecycler()
         setupComposer()
         setupHeaderButtons()
-        startGlowBreath()
-        binding.particleView.start()
-        
+
         requestNotificationPermissionAndSchedule()
 
         val user = auth.currentUser
@@ -337,7 +335,6 @@ class ChatActivity : AppCompatActivity() {
                         binding.composerContainer.setBackgroundColor(getColor(R.color.incognito_bg))
                         binding.etMessage.hint = "type incognito message…"
                         binding.incognitoBanner.visibility = View.VISIBLE
-                        binding.glowOrb.alpha = 0.25f
 
                         binding.btnDrawerIncognito.text = getString(R.string.exit_incognito)
                         binding.btnDrawerIncognito.setBackgroundResource(R.drawable.bg_incognito_active_chip)
@@ -348,7 +345,6 @@ class ChatActivity : AppCompatActivity() {
                         binding.composerContainer.setBackgroundColor(getColor(R.color.night_edge))
                         binding.etMessage.hint = getString(R.string.type_anything)
                         binding.incognitoBanner.visibility = View.GONE
-                        binding.glowOrb.alpha = 0.7f
 
                         binding.btnDrawerIncognito.text = getString(R.string.incognito)
                         binding.btnDrawerIncognito.setBackgroundResource(R.drawable.bg_ghost_chip)
@@ -390,40 +386,11 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    private fun startGlowBreath() {
-        glowBreathAnimator?.cancel()
-        glowBreathAnimator = ValueAnimator.ofFloat(1f, 1.08f, 1f).apply {
-            duration = 6500
-            repeatCount = ValueAnimator.INFINITE
-            interpolator = DecelerateInterpolator()
-            addUpdateListener { anim ->
-                val v = anim.animatedValue as Float
-                binding.glowOrb.scaleX = v
-                binding.glowOrb.scaleY = v
-            }
-            start()
-        }
-    }
+    private fun startGlowBreath() { }
 
     private fun setGlowThinking(thinking: Boolean) {
         if (isThinking == thinking) return
         isThinking = thinking
-        glowBreathAnimator?.cancel()
-        glowBreathAnimator = if (thinking) {
-            ValueAnimator.ofFloat(1f, 1.1f, 1f).apply {
-                duration = 2400
-                repeatCount = ValueAnimator.INFINITE
-                interpolator = DecelerateInterpolator()
-                addUpdateListener { anim ->
-                    val v = anim.animatedValue as Float
-                    binding.glowOrb.scaleX = v
-                    binding.glowOrb.scaleY = v
-                }
-                start()
-            }
-        } else {
-            startGlowBreath(); null
-        }
     }
 
     private fun showInfoSheet() {
@@ -541,18 +508,7 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.particleView.start()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        binding.particleView.stop()
-    }
-
     override fun onDestroy() {
-        binding.particleView.stop()
         glowBreathAnimator?.cancel()
         speechRecognizer?.destroy()
         tts?.stop()

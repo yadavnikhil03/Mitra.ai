@@ -21,6 +21,7 @@ import com.mitra.app.utils.GreetingUtils
 import com.mitra.app.utils.isOnline
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -75,36 +76,61 @@ class ChatViewModel @Inject constructor(
         if (uid == userId && (isInitializing || chatsMap.isNotEmpty())) return
         isInitializing = true
         uid = userId
+
+        if (activeChat == null) {
+            val greeting = GreetingUtils.greetingLine()
+            val initialChat = Chat(
+                messages = mutableListOf(ChatMessage(role = Role.MITRA, content = greeting))
+            )
+            chatsMap[initialChat.id] = initialChat
+            activeChat = initialChat
+            refreshUi()
+        }
+
         viewModelScope.launch {
             try {
-                if (idToken != null && !cryptoUtils.hasKey) {
-                    repeat(3) {
+                val keyJob = async {
+                    if (idToken != null && !cryptoUtils.hasKey) {
                         try {
                             val resp = apiService.getSessionKey("Bearer $idToken")
                             if (resp.isSuccessful) {
-                                resp.body()?.key?.let { cryptoUtils.initKey(it); return@repeat }
+                                resp.body()?.key?.let { cryptoUtils.initKey(it) }
                             }
                         } catch (_: Exception) {}
-                        if (!cryptoUtils.hasKey) delay(1200)
                     }
                 }
 
-                try { apiService.health() } catch (_: Exception) {}
+                val loaded = chatRepo.loadChats(userId, null)
+                keyJob.await()
 
-                val loaded = chatRepo.loadChats(userId, if (cryptoUtils.hasKey) cryptoUtils else null)
-                chatsMap.putAll(loaded)
+                if (loaded.isNotEmpty()) {
+                    val finalMap = mutableMapOf<String, Chat>()
+                    for ((id, chat) in loaded) {
+                        if (cryptoUtils.hasKey) {
+                            val decrypted = chat.messages.map { msg ->
+                                try {
+                                    msg.copy(content = cryptoUtils.decrypt(msg.content, userId))
+                                } catch (_: Exception) { msg }
+                            }
+                            chat.messages.clear()
+                            chat.messages.addAll(decrypted)
+                        }
+                        finalMap[id] = chat
+                    }
 
-                val mostRecent = chatsMap.values.maxByOrNull { it.updatedAt }
-                if (mostRecent != null) {
-                    activeChat = mostRecent
-                    checkReturnGreeting(mostRecent)
-                } else if (chatsMap.isEmpty()) {
-                    newChat()
-                    return@launch
+                    chatsMap.clear()
+                    chatsMap.putAll(finalMap)
+
+                    val mostRecent = chatsMap.values.maxByOrNull { it.updatedAt }
+                    if (mostRecent != null) {
+                        activeChat = mostRecent
+                        checkReturnGreeting(mostRecent)
+                    }
                 }
 
                 refreshUi()
                 emit(ChatEvent.ScrollToBottom)
+            } catch (_: Exception) {
             } finally {
                 isInitializing = false
             }
@@ -227,9 +253,9 @@ class ChatViewModel @Inject constructor(
             viewModelScope.launch {
                 delay(600)
                 val safeReply = GreetingUtils.randomSafeReply()
-                val mitraMsg  = ChatMessage(role = Role.MITRA, content = safeReply)
+                val mitraMsg  = ChatMessage(role = Role.MITRA, content = safeReply, type = MessageType.SUPPORT)
                 chat.messages.add(mitraMsg)
-                refreshUiWithSupportCard()
+                refreshUi()
                 persistActive()
                 emit(ChatEvent.ScrollToBottom)
             }

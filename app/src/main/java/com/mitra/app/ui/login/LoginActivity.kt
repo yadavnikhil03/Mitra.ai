@@ -32,53 +32,14 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(bars.left, bars.top, bars.right, bars.bottom)
             insets
         }
 
-
-        binding.particleView.start()
-
-        startGlowBreath()
-
-        setupCardTilt()
-
         setupClickListeners()
         observeState()
-    }
-
-    private fun startGlowBreath() {
-        binding.glowOrb.animate()
-            .scaleX(1.08f).scaleY(1.08f)
-            .setDuration(3200)
-            .withEndAction {
-                binding.glowOrb.animate()
-                    .scaleX(1.0f).scaleY(1.0f)
-                    .setDuration(3200)
-                    .withEndAction { startGlowBreath() }
-                    .start()
-            }.start()
-    }
-
-    private fun setupCardTilt() {
-        binding.authCard.setOnTouchListener { v, event ->
-            val dx = (event.x - v.width / 2f) / (v.width / 2f)
-            val dy = (event.y - v.height / 2f) / (v.height / 2f)
-            when (event.action) {
-                android.view.MotionEvent.ACTION_MOVE -> {
-                    v.rotationY = dx * 4f
-                    v.rotationX = -dy * 4f
-                }
-                android.view.MotionEvent.ACTION_UP,
-                android.view.MotionEvent.ACTION_CANCEL -> {
-                    v.animate().rotationX(0f).rotationY(0f).setDuration(300).start()
-                }
-            }
-            false
-        }
     }
 
     private fun setupClickListeners() {
@@ -102,10 +63,8 @@ class LoginActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     vm.uiState.collect { state ->
-
                         binding.btnAuthSubmit.isEnabled = !state.isLoading
                         binding.btnAuthSubmit.alpha     = if (state.isLoading) 0.55f else 1f
-
 
                         binding.btnAuthToggle.text = when (state.mode) {
                             AuthMode.LOGIN  -> getString(R.string.new_here)
@@ -115,7 +74,6 @@ class LoginActivity : AppCompatActivity() {
                             AuthMode.LOGIN  -> getString(R.string.sign_in)
                             AuthMode.SIGNUP -> getString(R.string.sign_up)
                         }
-
 
                         if (state.errorMessage.isNotBlank()) {
                             binding.tvAuthError.text       = state.errorMessage
@@ -145,8 +103,4 @@ class LoginActivity : AppCompatActivity() {
         finish()
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
     }
-
-    override fun onResume()  { super.onResume();  binding.particleView.start() }
-    override fun onPause()   { super.onPause();   binding.particleView.stop()  }
-    override fun onDestroy() { super.onDestroy(); binding.particleView.stop()  }
 }

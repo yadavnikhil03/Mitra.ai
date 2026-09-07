@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="night">#1C1014</color>
-    <color name="night_2">#2A1820</color>
-    <color name="night_edge">#120809</color>
-    <color name="ember_core">#FFD3A0</color>
-    <color name="ember">#FFB877</color>
-    <color name="ember_deep">#F0925A</color>
-    <color name="rose">#E89BA8</color>
-    <color name="text_primary">#F5ECE4</color>
-    <color name="muted">#B79E95</color>
-    <color name="faint">#806560</color>
 
-    <color name="line">#17FFECDE</color>
-    <color name="line_warm">#47FFB877</color>
-    <color name="glass">#8C1C1014</color>
-    <color name="surface_card">#12FFECDE</color>
-    <color name="user_bubble">#33FFB066</color>
-    <color name="mitra_bubble">#13FFECDE</color>
-    <color name="auth_input_bg">#0CFFFFFF</color>
-    <color name="input_focused">#0DFFB066</color>
+    <color name="night">#161412</color>
+    <color name="night_2">#1D1A17</color>
+    <color name="night_edge">#12100E</color>
 
-    <color name="incognito_bg">#1A1A2E</color>
-    <color name="incognito_accent">#6C63FF</color>
+    <color name="ember_core">#E29578</color>
+    <color name="ember">#DDA15E</color>
+    <color name="ember_deep">#BC6C25</color>
+    <color name="rose">#E08283</color>
 
-    <color name="status_bar">#120809</color>
+    <color name="text_primary">#F7F4F0</color>
+    <color name="muted">#AEA49C</color>
+    <color name="faint">#736B63</color>
 
-    <color name="support_bg">#1FFFB877</color>
-    <color name="crisis_rose_bg">#1FE89BA8</color>
-    <color name="crisis_rose_border">#66E89BA8</color>
+    <color name="line">#1AFFFFFF</color>
+    <color name="line_warm">#33E29578</color>
+    <color name="glass">#F01D1A17</color>
+    <color name="surface_card">#221F1C</color>
+    <color name="user_bubble">#342A24</color>
+    <color name="mitra_bubble">#221F1C</color>
+    <color name="auth_input_bg">#0FFFFFFF</color>
+    <color name="input_focused">#26E29578</color>
+
+    <color name="incognito_bg">#181922</color>
+    <color name="incognito_accent">#818CF8</color>
+    <color name="status_bar">#12100E</color>
+
+    <color name="support_bg">#1AE29578</color>
+    <color name="crisis_rose_bg">#1FE08283</color>
+    <color name="crisis_rose_border">#66E08283</color>
 </resources>

@@ -7,27 +7,6 @@
     android:background="@color/night_edge"
     android:fitsSystemWindows="true">
 
-    <!-- Particle background -->
-    <com.mitra.app.ui.chat.ParticleView
-        android:id="@+id/particleView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <!-- Ambient glow -->
-    <View
-        android:id="@+id/glowOrb"
-        android:layout_width="280dp"
-        android:layout_height="280dp"
-        android:background="@drawable/glow_orb"
-        android:alpha="0.6"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
-
-    <!-- Auth card -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,9 +31,9 @@
             android:maxWidth="440dp"
             android:layout_marginTop="48dp"
             android:layout_marginBottom="48dp"
-            android:elevation="4dp">
+            android:elevation="2dp">
 
-            <!-- Brand mark -->
+            <!-- Brand Header -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,7 +47,7 @@
                     android:layout_width="9dp"
                     android:layout_height="9dp"
                     android:background="@drawable/ic_mitra_dot"
-                    android:layout_marginEnd="7dp" />
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -76,8 +55,8 @@
                     android:text="@string/app_name"
                     android:textSize="26sp"
                     android:textColor="@color/text_primary"
-                    android:fontFamily="serif"
-                    android:textStyle="italic" />
+                    android:fontFamily="sans-serif-medium"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <!-- Tagline -->
@@ -90,7 +69,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="4dp" />
 
-            <!-- Welcome copy -->
+            <!-- Welcome Copy -->
             <TextView
                 android:id="@+id/tvAuthWelcome"
                 android:layout_width="match_parent"
@@ -103,7 +82,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="24dp" />
 
-            <!-- Error banner -->
+            <!-- Error Banner -->
             <TextView
                 android:id="@+id/tvAuthError"
                 android:layout_width="match_parent"
@@ -117,7 +96,7 @@
                 android:visibility="gone"
                 android:layout_marginBottom="12dp" />
 
-            <!-- Email field -->
+            <!-- Email Field -->
             <EditText
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
@@ -128,13 +107,13 @@
                 android:hint="@string/email_hint"
                 android:textColorHint="@color/muted"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:inputType="textEmailAddress"
                 android:autofillHints="emailAddress"
                 android:imeOptions="actionNext"
                 android:layout_marginBottom="12dp" />
 
-            <!-- Password field -->
+            <!-- Password Field -->
             <EditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
@@ -145,7 +124,7 @@
                 android:hint="@string/password_hint"
                 android:textColorHint="@color/muted"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:inputType="textPassword"
                 android:autofillHints="password"
                 android:imeOptions="actionDone"
@@ -155,17 +134,16 @@
             <Button
                 android:id="@+id/btnAuthSubmit"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="50dp"
                 android:text="@string/sign_in"
                 android:background="@drawable/bg_cta_button"
-                android:textColor="@color/night_edge"
-                android:textSize="16sp"
+                android:textColor="#141210"
+                android:textSize="15.5sp"
                 android:textStyle="bold"
-                android:elevation="6dp"
                 android:stateListAnimator="@null"
                 android:layout_marginBottom="6dp" />
 
-            <!-- Auth links row -->
+            <!-- Auth links -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
