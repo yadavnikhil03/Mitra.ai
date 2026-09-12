@@ -110,6 +110,17 @@
                     android:contentDescription="@string/cd_tts"
                     android:layout_marginEnd="6dp" />
 
+                <!-- Live avatar toggle -->
+                <ImageButton
+                    android:id="@+id/btnAvatar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_icon_btn"
+                    android:src="@drawable/ic_avatar"
+                    android:padding="9dp"
+                    android:contentDescription="@string/cd_avatar"
+                    android:layout_marginEnd="6dp" />
+
                 <!-- New Chat button -->
                 <ImageButton
                     android:id="@+id/btnHeaderNewChat"
@@ -175,9 +186,34 @@
             android:overScrollMode="never"
             android:scrollbars="none"
             app:layout_constraintTop_toBottomOf="@id/headerDivider"
-            app:layout_constraintBottom_toTopOf="@id/suggestionContainer"
+            app:layout_constraintBottom_toTopOf="@id/avatarStage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Live Avatar Stage -->
+        <FrameLayout
+            android:id="@+id/avatarStage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_avatar_stage"
+            android:paddingHorizontal="12dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:clipToPadding="false"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/recyclerMessages"
+            app:layout_constraintBottom_toTopOf="@id/suggestionContainer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.mitra.app.ui.chat.L2DView
+                android:id="@+id/l2dView"
+                android:layout_width="match_parent"
+                android:layout_height="190dp"
+                android:background="@android:color/transparent"
+                android:importantForAccessibility="no" />
+
+        </FrameLayout>
 
         <!-- Suggestion Chips Bar -->
         <HorizontalScrollView

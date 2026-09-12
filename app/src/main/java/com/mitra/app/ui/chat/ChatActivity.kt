@@ -7,14 +7,18 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
@@ -76,6 +80,11 @@ class ChatActivity : AppCompatActivity() {
     private var pendingSpeech: Pair<String, String>? = null
     private var activeObservedChatId: String = ""
 
+    private val mouthHandler = Handler(Looper.getMainLooper())
+    private var lipFlapRunnable: Runnable? = null
+    private var activeSpeech = 0
+    private var faceLoaded = false
+
     private val micPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted -> if (granted) startVoice() }
@@ -102,6 +111,7 @@ class ChatActivity : AppCompatActivity() {
         setupDrawerRecycler()
         setupComposer()
         setupHeaderButtons()
+        setupFace()
 
         requestNotificationPermissionAndSchedule()
 
@@ -138,6 +148,21 @@ class ChatActivity : AppCompatActivity() {
                 t.language = Locale.ENGLISH
                 t.setPitch(1.03f)
                 t.setSpeechRate(0.94f)
+                t.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+                    override fun onStart(utteranceId: String?) {
+                        if (utteranceId?.startsWith(MITRA_TTS_PREFIX) == true) startLipFlap()
+                    }
+                    override fun onDone(utteranceId: String?) {
+                        if (utteranceId?.startsWith(MITRA_TTS_PREFIX) == true) endLipFlapStep()
+                    }
+                    @Deprecated("Deprecated in Java")
+                    override fun onError(utteranceId: String?) {
+                        if (utteranceId?.startsWith(MITRA_TTS_PREFIX) == true) endLipFlapStep()
+                    }
+                    override fun onStop(utteranceId: String?, interrupted: Boolean) {
+                        if (utteranceId?.startsWith(MITRA_TTS_PREFIX) == true) endLipFlapStep()
+                    }
+                })
 
                 val hdVoice = t.voices?.find { v ->
                     val name = v.name.lowercase()
@@ -310,6 +335,65 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupFace() {
+        binding.l2dView.listener = object : L2DView.Listener {
+            override fun onFaceReady() {
+                runOnUiThread { faceLoaded = true }
+            }
+            override fun onFaceError(message: String) {
+                runOnUiThread {
+                    if (binding.avatarStage.visibility == View.VISIBLE) {
+                        binding.avatarStage.visibility = View.GONE
+                    }
+                }
+            }
+        }
+        binding.avatarStage.setOnTouchListener { _, event ->
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
+                    val w = binding.avatarStage.width.toFloat()
+                    val h = binding.avatarStage.height.toFloat()
+                    if (w > 0 && h > 0) {
+                        val nx = (event.x / w) * 2 - 1
+                        val ny = 1 - (event.y / h) * 2
+                        binding.l2dView.lookAt(nx, ny)
+                    }
+                }
+                else -> {}
+            }
+            true
+        }
+        binding.l2dView.load()
+    }
+
+    private fun startLipFlap() {
+        activeSpeech++
+        if (lipFlapRunnable != null) return
+        var frame = 0L
+        lipFlapRunnable = Runnable {
+            if (activeSpeech <= 0 || !faceLoaded) {
+                binding.l2dView.setMouth(0f)
+                return@Runnable
+            }
+            val wave = (Math.sin(frame * 0.55) * 0.5 + 0.5) * 0.55
+            val jitter = Math.random() * 0.35
+            binding.l2dView.setMouth(Math.min(1f, (0.15 + wave + jitter).toFloat()))
+            frame++
+            mouthHandler.postDelayed(lipFlapRunnable!!, 60L)
+        }
+        mouthHandler.post(lipFlapRunnable!!)
+    }
+
+    private fun endLipFlapStep() {
+        if (activeSpeech > 0) activeSpeech--
+        if (activeSpeech <= 0) {
+            activeSpeech = 0
+            lipFlapRunnable?.let { mouthHandler.removeCallbacks(it) }
+            lipFlapRunnable = null
+            if (faceLoaded) binding.l2dView.setMouth(0f)
+        }
+    }
+
     private fun setupHeaderButtons() {
         binding.btnChatList.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
@@ -325,6 +409,12 @@ class ChatActivity : AppCompatActivity() {
                 binding.btnTts.setImageResource(R.drawable.ic_volume_off)
                 Toast.makeText(this, getString(R.string.tts_off), Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.btnAvatar.setOnClickListener {
+            val newVisibility =
+                if (binding.avatarStage.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+            binding.avatarStage.visibility = newVisibility
         }
 
         binding.btnHeaderNewChat.setOnClickListener { vm.newChat() }
@@ -582,6 +672,9 @@ class ChatActivity : AppCompatActivity() {
         speechRecognizer?.destroy()
         tts?.stop()
         tts?.shutdown()
+        mouthHandler.removeCallbacksAndMessages(null)
+        lipFlapRunnable = null
+        binding.l2dView.destroy()
         super.onDestroy()
     }
 
@@ -629,6 +722,8 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private companion object {
+        const val MITRA_TTS_PREFIX = "MitraTTS_"
+
         val DIFF = object : DiffUtil.ItemCallback<Chat>() {
             override fun areItemsTheSame(a: Chat, b: Chat) = a.id == b.id
             override fun areContentsTheSame(a: Chat, b: Chat) = a == b

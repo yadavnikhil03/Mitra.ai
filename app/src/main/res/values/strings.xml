@@ -68,6 +68,7 @@
     <string name="cd_info">Privacy and information</string>
     <string name="cd_delete_chat">Delete conversation</string>
     <string name="cd_tts">Voice reply</string>
+    <string name="cd_avatar">Show or hide Mitra\'s mascot</string>
     <string name="tts_on">Voice replies enabled</string>
     <string name="tts_off">Voice replies disabled</string>
     <string name="voice_no_match">Didn\'t catch that. Try again.</string>
