@@ -186,34 +186,9 @@
             android:overScrollMode="never"
             android:scrollbars="none"
             app:layout_constraintTop_toBottomOf="@id/headerDivider"
-            app:layout_constraintBottom_toTopOf="@id/avatarStage"
+            app:layout_constraintBottom_toTopOf="@id/faceOverlay"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Live Avatar Stage -->
-        <FrameLayout
-            android:id="@+id/avatarStage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_avatar_stage"
-            android:paddingHorizontal="12dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:clipToPadding="false"
-            android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@id/recyclerMessages"
-            app:layout_constraintBottom_toTopOf="@id/suggestionContainer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <com.mitra.app.ui.chat.L2DView
-                android:id="@+id/l2dView"
-                android:layout_width="match_parent"
-                android:layout_height="190dp"
-                android:background="@android:color/transparent"
-                android:importantForAccessibility="no" />
-
-        </FrameLayout>
 
         <!-- Suggestion Chips Bar -->
         <HorizontalScrollView
@@ -355,6 +330,95 @@
                 android:elevation="2dp" />
 
         </LinearLayout>
+
+        <!-- Live Avatar Stage (inline strip by default, expands full screen in face mode).
+             Declared last so it draws above the chat UI when covering the screen. -->
+        <FrameLayout
+            android:id="@+id/faceOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="190dp"
+            android:background="@drawable/bg_avatar_stage"
+            app:layout_constraintTop_toBottomOf="@id/recyclerMessages"
+            app:layout_constraintBottom_toTopOf="@id/suggestionContainer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.mitra.app.ui.chat.L2DView
+                android:id="@+id/l2dView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:importantForAccessibility="no" />
+
+            <!-- Face mode top bar -->
+            <LinearLayout
+                android:id="@+id/faceTopBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="10dp"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/btnFaceClose"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_icon_btn"
+                    android:src="@drawable/ic_collapse"
+                    android:padding="9dp"
+                    android:contentDescription="@string/cd_face_close" />
+
+                <TextView
+                    android:id="@+id/faceTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/face_title"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="sans-serif-medium"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+            </LinearLayout>
+
+            <!-- Face mode subtitle -->
+            <TextView
+                android:id="@+id/tvFaceSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginHorizontal="32dp"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="10dp"
+                android:maxLines="3"
+                android:text="@string/face_subtitle_idle"
+                android:textSize="15sp"
+                android:textColor="@color/text_primary"
+                android:background="@drawable/bg_face_subtitle"
+                android:visibility="gone" />
+
+            <!-- Face mode mic -->
+            <ImageButton
+                android:id="@+id/btnFaceMic"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bg_face_mic"
+                android:src="@drawable/ic_mic"
+                android:padding="17dp"
+                android:elevation="4dp"
+                android:contentDescription="@string/cd_mic"
+                android:visibility="gone" />
+
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

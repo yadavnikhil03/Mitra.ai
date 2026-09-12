@@ -18,6 +18,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -25,11 +26,14 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -80,6 +84,12 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var speechPlayer: SpeechPlayer
     private var faceLoaded = false
 
+    private var faceMode = false
+    private var faceState = "idle"
+    private var speakingSubtitle = ""
+    private lateinit var inlineFaceSet: ConstraintSet
+    private lateinit var faceFullSet: ConstraintSet
+
     private val speechCache: java.io.File by lazy {
         java.io.File(cacheDir, "mitra_tts").also { it.mkdirs() }
     }
@@ -111,6 +121,7 @@ class ChatActivity : AppCompatActivity() {
         setupComposer()
         setupHeaderButtons()
         setupFace()
+        setupFaceMode()
 
         requestNotificationPermissionAndSchedule()
 
@@ -132,6 +143,8 @@ class ChatActivity : AppCompatActivity() {
             override fun handleOnBackPressed() {
                 if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
+                } else if (faceMode) {
+                    exitFaceMode()
                 } else {
                     isEnabled = false
                     onBackPressedDispatcher.onBackPressed()
@@ -159,6 +172,15 @@ class ChatActivity : AppCompatActivity() {
                 speechPlayer = SpeechPlayer(t, speechCache) { value ->
                     if (faceLoaded) binding.l2dView.setMouth(value)
                 }
+                speechPlayer.onSpeechChange = { playing ->
+                    runOnUiThread {
+                        if (playing) {
+                            setFaceState("speaking")
+                        } else if (faceState == "speaking") {
+                            setFaceState("idle")
+                        }
+                    }
+                }
                 ttsReady = true
                 val pending = pendingSpeech
                 if (pending != null && isTtsEnabled) {
@@ -184,6 +206,10 @@ class ChatActivity : AppCompatActivity() {
             .replace(Regex("[*_~`#]"), "")
             .replace("...", "…")
             .replace("--", "—")
+
+        speakingSubtitle = cleanText
+        setFaceState("speaking")
+        if (faceMode) updateFaceSubtitle(vm.state.value)
 
         val clauses = cleanText.split(Regex("(?<=[.,?!;…—\n])\\s+"))
         val units = mutableListOf<SpeechPlayer.SpeechClause>()
@@ -233,6 +259,18 @@ class ChatActivity : AppCompatActivity() {
             val imeBars = insets.getInsets(WindowInsetsCompat.Type.ime())
             val bottomPadding = maxOf(navBars.bottom, imeBars.bottom) + 10
             v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, bottomPadding)
+            insets
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.faceOverlay) { _, insets ->
+            val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            val navBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            val lastFaceSubtitle = binding.tvFaceSubtitle.layoutParams as android.widget.FrameLayout.LayoutParams
+            lastFaceSubtitle.bottomMargin = navBars.bottom + 96
+            val lastFaceMic = binding.btnFaceMic.layoutParams as android.widget.FrameLayout.LayoutParams
+            lastFaceMic.bottomMargin = navBars.bottom + 24
+            if (faceMode) {
+                binding.faceTopBar.updatePadding(top = statusBars.top + 10)
+            }
             insets
         }
         ViewCompat.setOnApplyWindowInsetsListener(binding.leftDrawerContainer) { v, insets ->
@@ -326,17 +364,19 @@ class ChatActivity : AppCompatActivity() {
             }
             override fun onFaceError(message: String) {
                 runOnUiThread {
-                    if (binding.avatarStage.visibility == View.VISIBLE) {
-                        binding.avatarStage.visibility = View.GONE
+                    if (faceMode) {
+                        exitFaceMode()
+                    } else {
+                        binding.l2dView.visibility = View.GONE
                     }
                 }
             }
         }
-        binding.avatarStage.setOnTouchListener { _, event ->
+        binding.faceOverlay.setOnTouchListener { _, event ->
             when (event.actionMasked) {
                 MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
-                    val w = binding.avatarStage.width.toFloat()
-                    val h = binding.avatarStage.height.toFloat()
+                    val w = binding.faceOverlay.width.toFloat()
+                    val h = binding.faceOverlay.height.toFloat()
                     if (w > 0 && h > 0) {
                         val nx = (event.x / w) * 2 - 1
                         val ny = 1 - (event.y / h) * 2
@@ -348,6 +388,87 @@ class ChatActivity : AppCompatActivity() {
             true
         }
         binding.l2dView.load()
+    }
+
+    private fun setupFaceMode() {
+        inlineFaceSet = ConstraintSet().apply { clone(binding.mainContent) }
+        faceFullSet = ConstraintSet().apply { clone(inlineFaceSet) }
+        val overlay = binding.faceOverlay
+        val root = binding.mainContent
+        faceFullSet.clear(overlay.id, ConstraintSet.TOP)
+        faceFullSet.clear(overlay.id, ConstraintSet.BOTTOM)
+        faceFullSet.clear(overlay.id, ConstraintSet.LEFT)
+        faceFullSet.clear(overlay.id, ConstraintSet.RIGHT)
+        faceFullSet.connect(overlay.id, ConstraintSet.TOP, root.id, ConstraintSet.TOP, 0)
+        faceFullSet.connect(overlay.id, ConstraintSet.BOTTOM, root.id, ConstraintSet.BOTTOM, 0)
+        faceFullSet.connect(overlay.id, ConstraintSet.START, root.id, ConstraintSet.START, 0)
+        faceFullSet.connect(overlay.id, ConstraintSet.END, root.id, ConstraintSet.END, 0)
+        faceFullSet.constrainWidth(overlay.id, ConstraintSet.MATCH_CONSTRAINT)
+        faceFullSet.constrainHeight(overlay.id, ConstraintSet.MATCH_CONSTRAINT)
+
+        binding.btnFaceClose.setOnClickListener { toggleFaceMode() }
+        binding.btnFaceMic.setOnClickListener { onMicClick() }
+    }
+
+    private fun toggleFaceMode() {
+        if (faceMode) exitFaceMode() else enterFaceMode()
+    }
+
+    private fun enterFaceMode() {
+        faceMode = true
+        binding.drawerLayout.closeDrawers()
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        binding.etMessage.clearFocus()
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(window.decorView.windowToken, 0)
+
+        faceFullSet.applyTo(binding.mainContent)
+        binding.faceOverlay.setBackgroundColor(getColor(R.color.night_edge))
+        binding.faceTopBar.visibility = View.VISIBLE
+        binding.tvFaceSubtitle.visibility = View.VISIBLE
+        binding.btnFaceMic.visibility = View.VISIBLE
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        setFaceState("idle")
+        updateFaceSubtitle(vm.state.value)
+        binding.faceOverlay.post { binding.l2dView.refreshSize() }
+    }
+
+    private fun exitFaceMode() {
+        faceMode = false
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        if (isRecording) speechRecognizer?.stopListening()
+        setFaceState("idle")
+        inlineFaceSet.applyTo(binding.mainContent)
+        binding.faceOverlay.setBackgroundResource(R.drawable.bg_avatar_stage)
+        binding.faceTopBar.visibility = View.GONE
+        binding.tvFaceSubtitle.visibility = View.GONE
+        binding.btnFaceMic.visibility = View.GONE
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        binding.faceOverlay.post { binding.l2dView.refreshSize() }
+    }
+
+    private fun setFaceState(next: String) {
+        if (faceState == next) return
+        faceState = next
+        binding.l2dView.setState(next)
+        updateFaceSubtitle(vm.state.value)
+    }
+
+    private fun updateFaceSubtitle(state: ChatUiState) {
+        if (!faceMode) return
+        val text = when (faceState) {
+            "listening" -> getString(R.string.face_subtitle_listening)
+            "thinking" -> getString(R.string.face_subtitle_thinking)
+            "speaking" -> speakingSubtitle
+            else -> state.items
+                .filterIsInstance<MessageItem.Regular>()
+                .lastOrNull { it.msg.role == Role.MITRA }
+                ?.msg?.content
+                ?: getString(R.string.face_subtitle_idle)
+        }
+        if (binding.tvFaceSubtitle.text != text) {
+            binding.tvFaceSubtitle.text = text
+        }
     }
 
     private fun setupHeaderButtons() {
@@ -368,11 +489,7 @@ class ChatActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnAvatar.setOnClickListener {
-            val newVisibility =
-                if (binding.avatarStage.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-            binding.avatarStage.visibility = newVisibility
-        }
+        binding.btnAvatar.setOnClickListener { toggleFaceMode() }
 
         binding.btnHeaderNewChat.setOnClickListener { vm.newChat() }
         binding.btnInfo.setOnClickListener { showInfoSheet() }
@@ -462,6 +579,8 @@ class ChatActivity : AppCompatActivity() {
                     if (!state.isBusy && lastItem is MessageItem.Regular && lastItem.msg.role == Role.MITRA) {
                         maybeAutoSpeak(state.activeChatId, lastItem.msg)
                     }
+
+                    updateFaceSubtitle(state)
                 }
             }
         }
@@ -483,7 +602,18 @@ class ChatActivity : AppCompatActivity() {
                         }
                         is ChatEvent.NavigateToLogin -> goToLogin()
                         is ChatEvent.ShowToast -> Toast.makeText(this@ChatActivity, event.msg, Toast.LENGTH_LONG).show()
-                        is ChatEvent.ShowGlowThinking -> setGlowThinking(event.on)
+                        is ChatEvent.ShowGlowThinking -> {
+                        setGlowThinking(event.on)
+                        if (event.on) {
+                            setFaceState("thinking")
+                        } else {
+                            val pendingSpeak = isTtsEnabled && vm.state.value.items
+                                .filterIsInstance<MessageItem.Regular>()
+                                .lastOrNull { it.msg.role == Role.MITRA }
+                                ?.let { it.msg.id != spokenPerChat[vm.state.value.activeChatId] } == true
+                            if (faceState == "thinking" && !pendingSpeak) setFaceState("idle")
+                        }
+                    }
                     }
                 }
             }
@@ -528,6 +658,7 @@ class ChatActivity : AppCompatActivity() {
         speechRecognizer?.setRecognitionListener(object : RecognitionListener {
             override fun onReadyForSpeech(params: Bundle?) {
                 setMicRecording(true)
+                if (faceMode) setFaceState("listening")
             }
             override fun onResults(results: Bundle?) {
                 val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
@@ -539,6 +670,9 @@ class ChatActivity : AppCompatActivity() {
                     binding.etMessage.setSelection(full.length)
                     if (vm.sendMessage(full)) {
                         binding.etMessage.setText("")
+                        if (faceMode) setFaceState("thinking")
+                    } else {
+                        if (faceMode && faceState == "listening") setFaceState("idle")
                     }
                 }
                 setMicRecording(false)
@@ -552,6 +686,7 @@ class ChatActivity : AppCompatActivity() {
             }
             override fun onError(error: Int) {
                 setMicRecording(false)
+                if (faceMode) setFaceState("idle")
                 val message = when (error) {
                     SpeechRecognizer.ERROR_NO_MATCH -> getString(R.string.voice_no_match)
                     SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> getString(R.string.voice_timeout)
@@ -602,12 +737,23 @@ class ChatActivity : AppCompatActivity() {
             binding.btnMic.setBackgroundResource(R.drawable.bg_mic_recording)
             binding.btnMic.imageTintList =
                 ColorStateList.valueOf(getColor(R.color.night_edge))
+            binding.btnFaceMic.setImageResource(R.drawable.ic_mic_stop)
             ObjectAnimator.ofFloat(binding.btnMic, "scaleX", 1f, 1.08f, 1f).apply {
                 duration = 1400
                 repeatCount = ObjectAnimator.INFINITE
                 start()
             }
             ObjectAnimator.ofFloat(binding.btnMic, "scaleY", 1f, 1.08f, 1f).apply {
+                duration = 1400
+                repeatCount = ObjectAnimator.INFINITE
+                start()
+            }
+            ObjectAnimator.ofFloat(binding.btnFaceMic, "scaleX", 1f, 1.12f, 1f).apply {
+                duration = 1400
+                repeatCount = ObjectAnimator.INFINITE
+                start()
+            }
+            ObjectAnimator.ofFloat(binding.btnFaceMic, "scaleY", 1f, 1.12f, 1f).apply {
                 duration = 1400
                 repeatCount = ObjectAnimator.INFINITE
                 start()
@@ -620,6 +766,11 @@ class ChatActivity : AppCompatActivity() {
             binding.btnMic.animate().scaleX(1f).scaleY(1f).setDuration(200).start()
             binding.btnMic.scaleX = 1f
             binding.btnMic.scaleY = 1f
+            binding.btnFaceMic.setImageResource(R.drawable.ic_mic)
+            binding.btnFaceMic.clearAnimation()
+            binding.btnFaceMic.animate().scaleX(1f).scaleY(1f).setDuration(200).start()
+            binding.btnFaceMic.scaleX = 1f
+            binding.btnFaceMic.scaleY = 1f
             binding.etMessage.hint = getString(R.string.type_anything)
         }
     }

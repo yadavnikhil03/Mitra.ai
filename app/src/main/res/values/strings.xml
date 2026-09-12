@@ -68,7 +68,12 @@
     <string name="cd_info">Privacy and information</string>
     <string name="cd_delete_chat">Delete conversation</string>
     <string name="cd_tts">Voice reply</string>
-    <string name="cd_avatar">Show or hide Mitra\'s mascot</string>
+    <string name="cd_avatar">Start a live talk with Mitra</string>
+    <string name="cd_face_close">Back to chat</string>
+    <string name="face_title">Mitra</string>
+    <string name="face_subtitle_idle">Tap the mic and talk to me</string>
+    <string name="face_subtitle_listening">Listening…</string>
+    <string name="face_subtitle_thinking">Thinking…</string>
     <string name="tts_on">Voice replies enabled</string>
     <string name="tts_off">Voice replies disabled</string>
     <string name="voice_no_match">Didn\'t catch that. Try again.</string>

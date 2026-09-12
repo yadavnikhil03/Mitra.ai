@@ -19,6 +19,8 @@ internal class SpeechPlayer(
     data class SpeechClause(val text: String, val pitch: Float, val pauseMs: Long)
     private data class Job(val file: File, val unit: SpeechClause, var ready: Boolean = false)
 
+    var onSpeechChange: ((Boolean) -> Unit)? = null
+
     private val main = Handler(Looper.getMainLooper())
     private val jobs = LinkedHashMap<Int, Job>()
     private var stopped = true
@@ -72,6 +74,7 @@ internal class SpeechPlayer(
         watchdog?.let { main.removeCallbacks(it) }
         watchdog = null
         queue = emptyList()
+        setPlaying(false)
         onMouthNow(0f)
     }
 
@@ -96,8 +99,10 @@ internal class SpeechPlayer(
         jobs.clear()
         if (queue.isEmpty()) {
             onMouthNow(0f)
+            setPlaying(false)
             return
         }
+        setPlaying(true)
         playAt(0)
     }
 
@@ -108,6 +113,7 @@ internal class SpeechPlayer(
         }
         if (position >= queue.size) {
             onMouthNow(0f)
+            setPlaying(false)
             return
         }
         releaseMedia()
@@ -213,6 +219,10 @@ internal class SpeechPlayer(
         mouthNow += (target - mouthNow) * 0.35f
         val value = mouthNow.coerceIn(0f, 1f)
         main.post { onMouth(value) }
+    }
+
+    private fun setPlaying(playing: Boolean) {
+        main.post { onSpeechChange?.invoke(playing) }
     }
 
     private fun releaseMedia() {
