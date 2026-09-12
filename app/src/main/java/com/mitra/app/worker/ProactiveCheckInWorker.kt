@@ -3,6 +3,7 @@ package com.mitra.app.worker
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
 
 class ProactiveCheckInWorker(
@@ -11,6 +12,8 @@ class ProactiveCheckInWorker(
 ) : Worker(appContext, workerParams) {
 
     override fun doWork(): Result {
+        if (FirebaseAuth.getInstance().currentUser == null) return Result.success()
+
         val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
 
         val messages = when (hour) {
