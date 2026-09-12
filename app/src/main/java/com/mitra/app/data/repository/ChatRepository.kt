@@ -35,11 +35,7 @@ class ChatRepository @Inject constructor(
                 // Decrypt each message if we have a session key
                 if (cryptoUtils != null) {
                     val decrypted = chat.messages.map { msg ->
-                        try {
-                            msg.copy(content = cryptoUtils.decrypt(msg.content, uid))
-                        } catch (_: Exception) {
-                            msg // leave as-is if decryption fails (plain-text fallback)
-                        }
+                        msg.copy(content = cryptoUtils.decryptOrPlaceholder(msg.content, uid))
                     }
                     chat.messages.clear()
                     chat.messages.addAll(decrypted)
@@ -58,16 +54,13 @@ class ChatRepository @Inject constructor(
      */
     suspend fun saveChat(uid: String, chat: Chat, cryptoUtils: CryptoUtils?) {
         require(!chat.isIncognito) { "Incognito chats must not be persisted." }
+        if (cryptoUtils == null) return
         try {
             val dto = chat.toDto().let { raw ->
-                if (cryptoUtils == null) raw
-                else raw.copy(
-                    messages = raw.messages.map { m ->
-                        try {
-                            m.copy(content = cryptoUtils.encrypt(m.content, uid))
-                        } catch (_: Exception) {
-                            m
-                        }
+                raw.copy(
+                    messages = raw.messages.mapNotNull { m ->
+                        val encrypted = cryptoUtils.encrypt(m.content, uid) ?: return@mapNotNull null
+                        m.copy(content = encrypted)
                     }
                 )
             }

@@ -17,6 +17,10 @@ private const val KEY_ALGO     = "AES"
 @Singleton
 class CryptoUtils @Inject constructor() {
 
+    companion object {
+        const val UNREADABLE_MESSAGE = "[Message cannot be decrypted on this device]"
+    }
+
     @Volatile private var secretKey: SecretKey? = null
 
     val hasKey: Boolean get() = secretKey != null
@@ -30,20 +34,23 @@ class CryptoUtils @Inject constructor() {
         secretKey = null
     }
 
-    fun encrypt(plaintext: String, uid: String): String {
-        val key = secretKey ?: return plaintext
+    fun encrypt(plaintext: String, uid: String): String? {
+        val key = secretKey ?: return null
+        return try {
+            val nonce = ByteArray(NONCE_SIZE).also { SecureRandom().nextBytes(it) }
+            val aad   = uid.toByteArray(Charsets.UTF_8)
+            val pt    = plaintext.toByteArray(Charsets.UTF_8)
 
-        val nonce = ByteArray(NONCE_SIZE).also { SecureRandom().nextBytes(it) }
-        val aad   = uid.toByteArray(Charsets.UTF_8)
-        val pt    = plaintext.toByteArray(Charsets.UTF_8)
+            val cipher = Cipher.getInstance(ALGORITHM)
+            cipher.init(Cipher.ENCRYPT_MODE, key, GCMParameterSpec(TAG_LENGTH, nonce))
+            cipher.updateAAD(aad)
+            val ct = cipher.doFinal(pt)
 
-        val cipher = Cipher.getInstance(ALGORITHM)
-        cipher.init(Cipher.ENCRYPT_MODE, key, GCMParameterSpec(TAG_LENGTH, nonce))
-        cipher.updateAAD(aad)
-        val ct = cipher.doFinal(pt)
-
-        val blob = nonce + ct
-        return Base64.encodeToString(blob, Base64.NO_WRAP)
+            val blob = nonce + ct
+            Base64.encodeToString(blob, Base64.NO_WRAP)
+        } catch (_: Exception) {
+            null
+        }
     }
 
     fun decrypt(ciphertextB64: String, uid: String): String {
@@ -67,6 +74,11 @@ class CryptoUtils @Inject constructor() {
         } catch (_: Exception) {
             ciphertextB64
         }
+    }
+
+    fun decryptOrPlaceholder(ciphertextB64: String, uid: String): String {
+        val result = decrypt(ciphertextB64, uid)
+        return if (isLikelyBase64Blob(result)) UNREADABLE_MESSAGE else result
     }
 
     private fun isLikelyBase64Blob(text: String): Boolean {
