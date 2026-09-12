@@ -20,6 +20,7 @@ import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -38,6 +39,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.mitra.app.R
 import com.mitra.app.data.model.Chat
+import com.mitra.app.data.model.ChatMessage
 import com.mitra.app.data.model.MessageItem
 import com.mitra.app.data.model.Role
 import com.mitra.app.databinding.ActivityChatBinding
@@ -69,7 +71,10 @@ class ChatActivity : AppCompatActivity() {
 
     private var tts: TextToSpeech? = null
     private var isTtsEnabled = false
-    private var lastSpokenMessageId: String? = null
+    private var ttsReady = false
+    private val spokenPerChat = mutableMapOf<String, String>()
+    private var pendingSpeech: Pair<String, String>? = null
+    private var activeObservedChatId: String = ""
 
     private val micPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -88,6 +93,8 @@ class ChatActivity : AppCompatActivity() {
 
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        handleBackPress()
 
         initTts()
         applyWindowInsets()
@@ -111,6 +118,19 @@ class ChatActivity : AppCompatActivity() {
         observeEvents()
     }
 
+    private fun handleBackPress() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
+    }
+
     private fun initTts() {
         tts = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
@@ -126,6 +146,19 @@ class ChatActivity : AppCompatActivity() {
                 }
                 if (hdVoice != null) {
                     t.voice = hdVoice
+                }
+                ttsReady = true
+                val pending = pendingSpeech
+                if (pending != null && isTtsEnabled) {
+                    pendingSpeech = null
+                    val msg = vm.state.value.items
+                        .filterIsInstance<MessageItem.Regular>()
+                        .map { it.msg }
+                        .firstOrNull { it.id == pending.second && it.role == Role.MITRA }
+                    if (msg != null) {
+                        speak(msg.content)
+                        spokenPerChat[pending.first] = msg.id
+                    }
                 }
             }
         }
@@ -168,6 +201,18 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
+    private fun maybeAutoSpeak(chatId: String, msg: ChatMessage) {
+        if (!isTtsEnabled) return
+        if (msg.content.isBlank()) return
+        if (spokenPerChat[chatId] == msg.id) return
+        if (!ttsReady) {
+            pendingSpeech = chatId to msg.id
+            return
+        }
+        speak(msg.content)
+        spokenPerChat[chatId] = msg.id
+    }
+
     private fun applyWindowInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.header) { v, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
@@ -179,6 +224,11 @@ class ChatActivity : AppCompatActivity() {
             val imeBars = insets.getInsets(WindowInsetsCompat.Type.ime())
             val bottomPadding = maxOf(navBars.bottom, imeBars.bottom) + 10
             v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, bottomPadding)
+            insets
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.leftDrawerContainer) { v, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            v.setPadding(v.paddingLeft, bars.top + 20, v.paddingRight, v.paddingBottom)
             insets
         }
     }
@@ -239,8 +289,7 @@ class ChatActivity : AppCompatActivity() {
 
         binding.btnSend.setOnClickListener {
             val text = binding.etMessage.text?.toString()?.trim() ?: ""
-            if (text.isNotEmpty()) {
-                vm.sendMessage(text)
+            if (text.isNotEmpty() && vm.sendMessage(text)) {
                 binding.etMessage.setText("")
             }
         }
@@ -311,8 +360,9 @@ class ChatActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 vm.state.collect { state ->
                     adapter.submitList(state.items.toList()) {
-                        if (adapter.itemCount > 0) {
-                            binding.recyclerMessages.scrollToPosition(adapter.itemCount - 1)
+                        val rv = binding.recyclerMessages
+                        if (adapter.itemCount <= 3 || !rv.canScrollVertically(1)) {
+                            rv.scrollToPosition(adapter.itemCount - 1)
                         }
                     }
 
@@ -328,6 +378,16 @@ class ChatActivity : AppCompatActivity() {
 
                     binding.btnSend.alpha = if (state.isBusy) 0.4f else 1f
                     binding.btnSend.isEnabled = !state.isBusy
+
+                    if (state.activeChatId != activeObservedChatId) {
+                        activeObservedChatId = state.activeChatId
+                        val lastMitra = state.items
+                            .filterIsInstance<MessageItem.Regular>()
+                            .lastOrNull { it.msg.role == Role.MITRA }
+                        if (lastMitra != null) {
+                            spokenPerChat[state.activeChatId] = lastMitra.msg.id
+                        }
+                    }
 
                     if (state.isIncognito) {
                         binding.mainContent.setBackgroundColor(getColor(R.color.incognito_bg))
@@ -352,11 +412,8 @@ class ChatActivity : AppCompatActivity() {
                     }
 
                     val lastItem = state.items.lastOrNull()
-                    if (isTtsEnabled && !state.isBusy && lastItem is MessageItem.Regular && lastItem.msg.role == Role.MITRA) {
-                        if (lastSpokenMessageId != lastItem.msg.id) {
-                            lastSpokenMessageId = lastItem.msg.id
-                            speak(lastItem.msg.content)
-                        }
+                    if (!state.isBusy && lastItem is MessageItem.Regular && lastItem.msg.role == Role.MITRA) {
+                        maybeAutoSpeak(state.activeChatId, lastItem.msg)
                     }
                 }
             }
@@ -386,11 +443,21 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    private fun startGlowBreath() { }
-
     private fun setGlowThinking(thinking: Boolean) {
         if (isThinking == thinking) return
         isThinking = thinking
+        if (thinking) {
+            glowBreathAnimator = ObjectAnimator.ofFloat(binding.brandDot, "alpha", 0.35f, 1f).apply {
+                duration = 700
+                repeatCount = ObjectAnimator.INFINITE
+                repeatMode = ObjectAnimator.REVERSE
+                start()
+            }
+        } else {
+            glowBreathAnimator?.cancel()
+            glowBreathAnimator = null
+            binding.brandDot.alpha = 1f
+        }
     }
 
     private fun showInfoSheet() {
@@ -423,7 +490,9 @@ class ChatActivity : AppCompatActivity() {
                     val full = (baseText + sep + text).trim()
                     binding.etMessage.setText(full)
                     binding.etMessage.setSelection(full.length)
-                    binding.btnSend.performClick()
+                    if (vm.sendMessage(full)) {
+                        binding.etMessage.setText("")
+                    }
                 }
                 setMicRecording(false)
             }
@@ -434,7 +503,17 @@ class ChatActivity : AppCompatActivity() {
                 val sep = if (baseText.isNotEmpty()) " " else ""
                 binding.etMessage.setText((baseText + sep + partial).trim())
             }
-            override fun onError(error: Int) { setMicRecording(false) }
+            override fun onError(error: Int) {
+                setMicRecording(false)
+                val message = when (error) {
+                    SpeechRecognizer.ERROR_NO_MATCH -> getString(R.string.voice_no_match)
+                    SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> getString(R.string.voice_timeout)
+                    SpeechRecognizer.ERROR_NETWORK -> getString(R.string.voice_network)
+                    SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> getString(R.string.voice_busy)
+                    else -> getString(R.string.voice_error)
+                }
+                Toast.makeText(this@ChatActivity, message, Toast.LENGTH_SHORT).show()
+            }
             override fun onEndOfSpeech() {}
             override fun onBeginningOfSpeech() {}
             override fun onRmsChanged(rmsdB: Float) {}
@@ -495,16 +574,6 @@ class ChatActivity : AppCompatActivity() {
             binding.btnMic.scaleX = 1f
             binding.btnMic.scaleY = 1f
             binding.etMessage.hint = getString(R.string.type_anything)
-        }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            @Suppress("DEPRECATION")
-            super.onBackPressed()
         }
     }
 
