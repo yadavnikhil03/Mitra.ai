@@ -7,13 +7,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
-import android.speech.tts.UtteranceProgressListener
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
@@ -80,10 +77,12 @@ class ChatActivity : AppCompatActivity() {
     private var pendingSpeech: Pair<String, String>? = null
     private var activeObservedChatId: String = ""
 
-    private val mouthHandler = Handler(Looper.getMainLooper())
-    private var lipFlapRunnable: Runnable? = null
-    private var activeSpeech = 0
+    private lateinit var speechPlayer: SpeechPlayer
     private var faceLoaded = false
+
+    private val speechCache: java.io.File by lazy {
+        java.io.File(cacheDir, "mitra_tts").also { it.mkdirs() }
+    }
 
     private val micPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -148,21 +147,6 @@ class ChatActivity : AppCompatActivity() {
                 t.language = Locale.ENGLISH
                 t.setPitch(1.03f)
                 t.setSpeechRate(0.94f)
-                t.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-                    override fun onStart(utteranceId: String?) {
-                        if (utteranceId?.startsWith(MITRA_TTS_PREFIX) == true) startLipFlap()
-                    }
-                    override fun onDone(utteranceId: String?) {
-                        if (utteranceId?.startsWith(MITRA_TTS_PREFIX) == true) endLipFlapStep()
-                    }
-                    @Deprecated("Deprecated in Java")
-                    override fun onError(utteranceId: String?) {
-                        if (utteranceId?.startsWith(MITRA_TTS_PREFIX) == true) endLipFlapStep()
-                    }
-                    override fun onStop(utteranceId: String?, interrupted: Boolean) {
-                        if (utteranceId?.startsWith(MITRA_TTS_PREFIX) == true) endLipFlapStep()
-                    }
-                })
 
                 val hdVoice = t.voices?.find { v ->
                     val name = v.name.lowercase()
@@ -171,6 +155,9 @@ class ChatActivity : AppCompatActivity() {
                 }
                 if (hdVoice != null) {
                     t.voice = hdVoice
+                }
+                speechPlayer = SpeechPlayer(t, speechCache) { value ->
+                    if (faceLoaded) binding.l2dView.setMouth(value)
                 }
                 ttsReady = true
                 val pending = pendingSpeech
@@ -191,8 +178,7 @@ class ChatActivity : AppCompatActivity() {
 
     private fun speak(text: String) {
         if (text.isBlank()) return
-        val t = tts ?: return
-        t.stop()
+        if (!ttsReady) return
 
         val cleanText = text
             .replace(Regex("[*_~`#]"), "")
@@ -200,7 +186,8 @@ class ChatActivity : AppCompatActivity() {
             .replace("--", "—")
 
         val clauses = cleanText.split(Regex("(?<=[.,?!;…—\n])\\s+"))
-        for ((idx, clause) in clauses.withIndex()) {
+        val units = mutableListOf<SpeechPlayer.SpeechClause>()
+        for (clause in clauses) {
             val trimmed = clause.trim()
             if (trimmed.isEmpty()) continue
 
@@ -209,10 +196,6 @@ class ChatActivity : AppCompatActivity() {
                 trimmed.endsWith("!") -> 1.06f
                 else -> 1.03f
             }
-            t.setPitch(sentencePitch)
-            t.setSpeechRate(0.94f)
-
-            t.speak(trimmed, TextToSpeech.QUEUE_ADD, null, "MitraTTS_$idx")
 
             val pauseMs = when {
                 trimmed.endsWith("…") || trimmed.endsWith("—") -> 620L
@@ -222,8 +205,9 @@ class ChatActivity : AppCompatActivity() {
                 trimmed.contains("\n") -> 500L
                 else -> 180L
             }
-            t.playSilentUtterance(pauseMs, TextToSpeech.QUEUE_ADD, "Pause_$idx")
+            units.add(SpeechPlayer.SpeechClause(trimmed, sentencePitch, pauseMs))
         }
+        speechPlayer.speak(units)
     }
 
     private fun maybeAutoSpeak(chatId: String, msg: ChatMessage) {
@@ -366,34 +350,6 @@ class ChatActivity : AppCompatActivity() {
         binding.l2dView.load()
     }
 
-    private fun startLipFlap() {
-        activeSpeech++
-        if (lipFlapRunnable != null) return
-        var frame = 0L
-        lipFlapRunnable = Runnable {
-            if (activeSpeech <= 0 || !faceLoaded) {
-                binding.l2dView.setMouth(0f)
-                return@Runnable
-            }
-            val wave = (Math.sin(frame * 0.55) * 0.5 + 0.5) * 0.55
-            val jitter = Math.random() * 0.35
-            binding.l2dView.setMouth(Math.min(1f, (0.15 + wave + jitter).toFloat()))
-            frame++
-            mouthHandler.postDelayed(lipFlapRunnable!!, 60L)
-        }
-        mouthHandler.post(lipFlapRunnable!!)
-    }
-
-    private fun endLipFlapStep() {
-        if (activeSpeech > 0) activeSpeech--
-        if (activeSpeech <= 0) {
-            activeSpeech = 0
-            lipFlapRunnable?.let { mouthHandler.removeCallbacks(it) }
-            lipFlapRunnable = null
-            if (faceLoaded) binding.l2dView.setMouth(0f)
-        }
-    }
-
     private fun setupHeaderButtons() {
         binding.btnChatList.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
@@ -405,6 +361,7 @@ class ChatActivity : AppCompatActivity() {
                 binding.btnTts.setImageResource(R.drawable.ic_volume_up)
                 Toast.makeText(this, getString(R.string.tts_on), Toast.LENGTH_SHORT).show()
             } else {
+                speechPlayer.stop()
                 tts?.stop()
                 binding.btnTts.setImageResource(R.drawable.ic_volume_off)
                 Toast.makeText(this, getString(R.string.tts_off), Toast.LENGTH_SHORT).show()
@@ -670,10 +627,9 @@ class ChatActivity : AppCompatActivity() {
     override fun onDestroy() {
         glowBreathAnimator?.cancel()
         speechRecognizer?.destroy()
+        if (::speechPlayer.isInitialized) speechPlayer.stop()
         tts?.stop()
         tts?.shutdown()
-        mouthHandler.removeCallbacksAndMessages(null)
-        lipFlapRunnable = null
         binding.l2dView.destroy()
         super.onDestroy()
     }
@@ -722,8 +678,6 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private companion object {
-        const val MITRA_TTS_PREFIX = "MitraTTS_"
-
         val DIFF = object : DiffUtil.ItemCallback<Chat>() {
             override fun areItemsTheSame(a: Chat, b: Chat) = a.id == b.id
             override fun areContentsTheSame(a: Chat, b: Chat) = a == b
