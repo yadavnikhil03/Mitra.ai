@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Mitra Live2D Face</title>
+<!--
+  Mascot model: Hiyori from Live2D Cubism SDK for Web samples,
+  provided under the Live2D Free Material License (https://www.live2d.com/eula/live2d-free-material-license-agreement_en.html).
+  Framework: PixiJS + pixi-live2d-display (MIT). Core: Live2D Cubism Core.
+-->
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+  }
+  #face {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    touch-action: none;
+  }
+  #status {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 4px;
+    margin: 0 auto;
+    width: fit-content;
+    max-width: 100%;
+    box-sizing: border-box;
+    color: #AEA49C;
+    font: 11px sans-serif;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+</style>
+</head>
+<body>
+  <canvas id="face" width="1" height="1"></canvas>
+  <div id="status"></div>
+
+  <script src="js/live2dcubismcore.min.js"></script>
+  <script src="js/pixi.min.js"></script>
+  <script src="js/cubism4.min.js"></script>
+  <script src="mitra-face.js"></script>
+</body>
+</html>
