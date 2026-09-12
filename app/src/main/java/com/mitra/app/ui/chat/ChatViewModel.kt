@@ -31,7 +31,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.UUID
 import javax.inject.Inject
 
@@ -62,14 +61,13 @@ class ChatViewModel @Inject constructor(
     private val _state  = MutableStateFlow(ChatUiState())
     val state: StateFlow<ChatUiState> = _state.asStateFlow()
 
-    private val _events = MutableSharedFlow<ChatEvent>()
+    private val _events = MutableSharedFlow<ChatEvent>(extraBufferCapacity = 8)
     val events: SharedFlow<ChatEvent> = _events.asSharedFlow()
 
     private val chatsMap = mutableMapOf<String, Chat>()
     private var activeChat: Chat? = null
     private var uid: String? = null
     private var supportShown = false
-    private var sessionMsgCount = 0
     private var isInitializing = false
 
     fun onSignedIn(userId: String, idToken: String?) {
@@ -108,9 +106,7 @@ class ChatViewModel @Inject constructor(
                     for ((id, chat) in loaded) {
                         if (cryptoUtils.hasKey) {
                             val decrypted = chat.messages.map { msg ->
-                                try {
-                                    msg.copy(content = cryptoUtils.decrypt(msg.content, userId))
-                                } catch (_: Exception) { msg }
+                                msg.copy(content = cryptoUtils.decryptOrPlaceholder(msg.content, userId))
                             }
                             chat.messages.clear()
                             chat.messages.addAll(decrypted)
@@ -218,9 +214,9 @@ class ChatViewModel @Inject constructor(
         newChat()
     }
 
-    fun sendMessage(text: String) {
-        val chat = activeChat ?: return
-        if (text.isBlank() || _state.value.isBusy) return
+    fun sendMessage(text: String): Boolean {
+        val chat = activeChat ?: return false
+        if (text.isBlank() || _state.value.isBusy) return false
 
         if (!appContext.isOnline()) {
             viewModelScope.launch {
@@ -228,13 +224,13 @@ class ChatViewModel @Inject constructor(
                     "Looks like your internet connection dropped. Send your message again once you are back online."
                 ))
             }
-            return
+            return false
         }
 
         val userMsg = ChatMessage(role = Role.USER, content = text)
         chat.messages.add(userMsg)
         chat.updatedAt = System.currentTimeMillis()
-        sessionMsgCount++
+        persistChat(chat)
 
         if (!supportShown && CrisisDetector.isCrisis(text)) {
             supportShown = true
@@ -245,10 +241,10 @@ class ChatViewModel @Inject constructor(
                 val mitraMsg  = ChatMessage(role = Role.MITRA, content = safeReply, type = MessageType.SUPPORT)
                 chat.messages.add(mitraMsg)
                 refreshUi()
-                persistActive()
+                persistChat(chat)
                 emit(ChatEvent.ScrollToBottom)
             }
-            return
+            return true
         }
 
         refreshUiWithTyping()
@@ -261,7 +257,7 @@ class ChatViewModel @Inject constructor(
 
             try {
                 val apiMessages = chat.messages
-                    .filter { it.type != MessageType.SUPPORT }
+                    .filter { it.type != MessageType.SUPPORT && it.content != CryptoUtils.UNREADABLE_MESSAGE }
                     .takeLast(20)
                     .map { ApiMessage(role = it.role.name.lowercase(), content = it.content) }
 
@@ -299,10 +295,10 @@ class ChatViewModel @Inject constructor(
                 }
                 updateStreamingBubble(accumulated)
             } finally {
-                if (accumulated.isNotEmpty()) {
+                if (success && accumulated.isNotEmpty()) {
                     val mitraMsg = ChatMessage(role = Role.MITRA, content = accumulated)
                     chat.messages.add(mitraMsg)
-                    persistActive()
+                    persistChat(chat)
                     refreshUi()
                 }
                 setBusy(false)
@@ -310,6 +306,7 @@ class ChatViewModel @Inject constructor(
                 emit(ChatEvent.ScrollToBottom)
             }
         }
+        return true
     }
 
     suspend fun sendFeedback(text: String): Boolean =
@@ -334,8 +331,9 @@ class ChatViewModel @Inject constructor(
                 delay(500)
                 val returnMsg = ChatMessage(role = Role.MITRA, content = GreetingUtils.returnLine())
                 chat.messages.add(returnMsg)
+                chat.updatedAt = System.currentTimeMillis()
                 refreshUi()
-                persistActive()
+                persistChat(chat)
                 emit(ChatEvent.ScrollToBottom)
             }
         }
@@ -346,8 +344,12 @@ class ChatViewModel @Inject constructor(
     }
 
     private fun persistActive() {
-        val chat = activeChat ?: return
+        activeChat?.let { persistChat(it) }
+    }
+
+    private fun persistChat(chat: Chat) {
         if (chat.isIncognito) return
+        if (chatsMap[chat.id] !== chat) return
         val u = uid ?: return
         viewModelScope.launch {
             chatRepo.saveChat(u, chat, if (cryptoUtils.hasKey) cryptoUtils else null)
@@ -372,15 +374,6 @@ class ChatViewModel @Inject constructor(
     private fun refreshUiWithTyping() {
         val chat  = activeChat ?: return
         val items = chat.messages.map { MessageItem.Regular(it) } + listOf(MessageItem.Typing)
-        _state.update { it.copy(items = items) }
-    }
-
-    private fun refreshUiWithSupportCard() {
-        val chat  = activeChat ?: return
-        val card  = SupportCard(
-            "If you are carrying something heavy right now, you do not have to handle it alone. Tele-MANAS is free, 24/7, and confidential:"
-        )
-        val items = chat.messages.map { MessageItem.Regular(it) } + listOf(MessageItem.Support(card))
         _state.update { it.copy(items = items) }
     }
 
