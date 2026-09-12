@@ -58,6 +58,16 @@ class L2DView @JvmOverloads constructor(
         evaluateJavascript("window.MitraFace && window.MitraFace.setMouth($open)", null)
     }
 
+    fun setState(state: String) {
+        if (!faceReady) return
+        evaluateJavascript("window.MitraFace && window.MitraFace.setState('$state')", null)
+    }
+
+    fun refreshSize() {
+        if (!faceReady) return
+        evaluateJavascript("window.dispatchEvent(new Event('resize'))", null)
+    }
+
     fun lookAt(x: Float, y: Float) {
         if (!faceReady) return
         evaluateJavascript("window.MitraFace && window.MitraFace.lookAt($x, $y)", null)

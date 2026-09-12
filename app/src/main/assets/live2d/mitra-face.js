@@ -12,6 +12,9 @@
   var focusY = 0
   var lastPointer = 0
   var running = false
+  var state = 'idle'
+  var stateTime = 0
+  var nodStarted = 0
 
   function showStatus(text) {
     statusEl.style.display = text ? 'block' : 'none'
@@ -40,11 +43,27 @@
     var w = canvas.clientWidth
     var h = canvas.clientHeight
     if (!model || w === 0 || h === 0) return
-    model.anchor.set(0.5, 0.5)
-    var s = Math.min(w / model.width, h / model.height) * 0.92
-    model.scale.set(s, s)
-    model.x = w / 2
-    model.y = h / 2
+    var isPortrait = h > 1.15 * w
+    if (isPortrait) {
+      model.anchor.set(0.5, 1)
+      var s = Math.min(w / model.width, h / model.height)
+      model.scale.set(s, s)
+      model.x = w / 2
+      model.y = h
+    } else {
+      model.anchor.set(0.5, 0.5)
+      var sc = Math.min(w / model.width, h / model.height) * 0.9
+      model.scale.set(sc, sc)
+      model.x = w / 2
+      model.y = h / 2
+    }
+  }
+
+  function setParameter(id, v) {
+    if (!model || !model.internalModel || !model.internalModel.coreModel) return
+    try {
+      model.internalModel.coreModel.setParameterValueById(id, v, 2)
+    } catch (e) {}
   }
 
   function lookAt(x, y) {
@@ -71,20 +90,68 @@
   function hookPointer() {
     canvas.addEventListener('pointerdown', function (e) { pointerToFocus(e) })
     canvas.addEventListener('pointermove', function (e) {
-      if (e.pointerType === 'touch') {
-        pointerToFocus(e)
-      } else {
-        pointerToFocus(e)
-      }
+      pointerToFocus(e)
     })
   }
 
   function pump() {
     requestAnimationFrame(pump)
+    var t = performance.now() / 1000
     mouthNow += (mouthTarget - mouthNow) * 0.30
-    if (model && model.internalModel && model.internalModel.coreModel) {
-      model.internalModel.coreModel.setParameterValueById('ParamMouthOpenY', mouthNow, 2)
+
+    var headX = 0
+    var headY = 0
+    var headZ = 0
+    var browLY = 0
+    var browRY = 0
+    var mouth = 0
+    var bodyX = Math.sin(t * 0.8) * 0.02
+    var bodyY = Math.sin(t * 0.55) * 0.012
+
+    switch (state) {
+      case 'listening':
+        headX = 0.045 + Math.sin(t * 0.7) * 0.015
+        headY = 0.035
+        headZ = -0.05 + Math.sin(t * 0.5) * 0.01
+        browLY = 0.1 + Math.sin(t * 0.9) * 0.02
+        browRY = 0.1 + Math.sin(t * 0.9) * 0.02
+        if (t - nodStarted > 3.4) {
+          nodStarted = t
+        }
+        var nodK = Math.max(0, 1 - (t - nodStarted) / 0.7)
+        headY += nodK * 0.05
+        break
+      case 'thinking':
+        headX = Math.sin(t * 0.35) * 0.02
+        headY = -0.12
+        headZ = Math.sin(t * 0.25) * 0.02
+        browLY = -0.14
+        browRY = -0.14
+        break
+      case 'speaking':
+        headX = Math.sin(t * 2.9) * 0.028 + mouthNow * 0.02
+        headY = 0.02 + Math.sin(t * 1.7) * 0.018
+        headZ = Math.sin(t * 2.2) * 0.02
+        browLY = Math.sin(t * 6.5) * 0.06 * mouthNow
+        browRY = Math.sin(t * 6.5 + 1.1) * 0.06 * mouthNow
+        mouth = mouthNow
+        break
+      case 'idle':
+      default:
+        headX = Math.sin(t * 0.5) * 0.02
+        headY = Math.sin(t * 0.72) * 0.015
+        headZ = Math.sin(t * 0.4) * 0.012
+        break
     }
+
+    setParameter('ParamAngleX', headX)
+    setParameter('ParamAngleY', headY)
+    setParameter('ParamAngleZ', headZ)
+    setParameter('ParamBrowLY', browLY)
+    setParameter('ParamBrowRY', browRY)
+    setParameter('ParamBodyAngleX', bodyX)
+    setParameter('ParamBodyAngleY', bodyY)
+    setParameter('ParamMouthOpenY', mouth)
   }
 
   function playIdle() {
@@ -95,10 +162,13 @@
   function saccade() {
     if (!model) return
     if (Date.now() - lastPointer < 2600) return
-    var dx = (Math.random() - 0.5) * 0.7
-    var dy = (Math.random() - 0.5) * 0.7
-    var nx = Math.max(-0.35, Math.min(0.35, focusX * 0.6 + dx))
-    var ny = Math.max(-0.30, Math.min(0.30, focusY * 0.6 + dy))
+    var relaxed = 0.45
+    if (state === 'listening') relaxed = 0.2
+    if (state === 'thinking') relaxed = 0.15
+    var dx = (Math.random() - 0.5) * relaxed
+    var dy = (Math.random() - 0.5) * relaxed
+    var nx = Math.max(-0.35, Math.min(0.35, focusX * 0.5 + dx))
+    var ny = Math.max(-0.30, Math.min(0.30, focusY * 0.5 + dy))
     lookAt(nx, ny)
   }
 
@@ -151,15 +221,24 @@
     setMouth: function (open) {
       var v = isFinite(open) ? open : 0
       mouthTarget = Math.max(0, Math.min(1, v))
-      if (v > 0.05) {
+      if (v > 0.05 && state !== 'listening' && state !== 'thinking') {
         if (Math.abs(focusX) > 0.25 || focusY > 0.3 || focusY < -0.1) {
           lookAt(focusX * 0.5, focusY * 0.5 + 0.1)
         }
       }
     },
+    setState: function (next) {
+      if (!next || state === next) return
+      if (next === 'idle' || next === 'listening' || next === 'thinking' || next === 'speaking') {
+        state = next
+        stateTime = performance.now() / 1000
+        if (state !== 'speaking') mouthTarget = 0
+      }
+    },
     lookAt: function (x, y) {
       if (isFinite(x)) lookAt(Math.max(-1, Math.min(1, x)), isFinite(y) ? Math.max(-1, Math.min(1, y)) : 0)
     },
+    getState: function () { return state },
     isReady: function () { return running }
   }
 
