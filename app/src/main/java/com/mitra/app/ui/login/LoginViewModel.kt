@@ -19,7 +19,8 @@ enum class AuthMode { LOGIN, SIGNUP }
 data class LoginUiState(
     val mode: AuthMode       = AuthMode.LOGIN,
     val isLoading: Boolean   = false,
-    val errorMessage: String = ""
+    val errorMessage: String = "",
+    val successMessage: String = ""
 )
 
 sealed class LoginEvent {
@@ -41,7 +42,7 @@ class LoginViewModel @Inject constructor(
 
     fun toggleMode() {
         val next = if (_uiState.value.mode == AuthMode.LOGIN) AuthMode.SIGNUP else AuthMode.LOGIN
-        _uiState.value = _uiState.value.copy(mode = next, errorMessage = "")
+        _uiState.value = _uiState.value.copy(mode = next, errorMessage = "", successMessage = "")
     }
 
     fun submit(email: String, password: String) {
@@ -51,7 +52,7 @@ class LoginViewModel @Inject constructor(
             return
         }
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = "")
+            _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = "", successMessage = "")
             val result = when (_uiState.value.mode) {
                 AuthMode.LOGIN  -> authRepo.signIn(email, password)
                 AuthMode.SIGNUP -> authRepo.signUp(email, password)
@@ -71,15 +72,14 @@ class LoginViewModel @Inject constructor(
         }
         viewModelScope.launch {
             val result = authRepo.sendPasswordReset(email)
-            val msg = when (result) {
-                is AuthResult.Success -> "Password reset email sent. Check your inbox."
-                is AuthResult.Error   -> result.message
+            when (result) {
+                is AuthResult.Success -> _uiState.value = _uiState.value.copy(successMessage = "Password reset email sent. Check your inbox.")
+                is AuthResult.Error   -> _uiState.value = _uiState.value.copy(errorMessage = result.message)
             }
-            _uiState.value = _uiState.value.copy(errorMessage = msg)
         }
     }
 
-    fun clearError() {
-        _uiState.value = _uiState.value.copy(errorMessage = "")
+    fun clearMessage() {
+        _uiState.value = _uiState.value.copy(errorMessage = "", successMessage = "")
     }
 }

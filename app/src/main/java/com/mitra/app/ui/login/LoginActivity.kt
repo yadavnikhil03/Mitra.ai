@@ -2,6 +2,8 @@ package com.mitra.app.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
@@ -23,6 +25,12 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private val vm: LoginViewModel by viewModels()
+
+    private val clearListener = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) { vm.clearMessage() }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +64,8 @@ class LoginActivity : AppCompatActivity() {
         binding.etPassword.setOnEditorActionListener { _, _, _ ->
             binding.btnAuthSubmit.performClick(); true
         }
+        binding.etEmail.addTextChangedListener(clearListener)
+        binding.etPassword.addTextChangedListener(clearListener)
     }
 
     private fun observeState() {
@@ -77,6 +87,14 @@ class LoginActivity : AppCompatActivity() {
 
                         if (state.errorMessage.isNotBlank()) {
                             binding.tvAuthError.text       = state.errorMessage
+                            binding.tvAuthError.setTextColor(getColor(R.color.rose))
+                            binding.tvAuthError.visibility = View.VISIBLE
+                            binding.tvAuthError.startAnimation(
+                                AnimationUtils.loadAnimation(this@LoginActivity, R.anim.fade_in)
+                            )
+                        } else if (state.successMessage.isNotBlank()) {
+                            binding.tvAuthError.text       = state.successMessage
+                            binding.tvAuthError.setTextColor(getColor(R.color.ember_core))
                             binding.tvAuthError.visibility = View.VISIBLE
                             binding.tvAuthError.startAnimation(
                                 AnimationUtils.loadAnimation(this@LoginActivity, R.anim.fade_in)
