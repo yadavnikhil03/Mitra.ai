@@ -29,7 +29,9 @@ data class ChatDto(
 
 data class MessageDto(
     val role: String = "mitra",
-    val content: String = ""
+    val content: String = "",
+    val id: String = "",
+    val timestamp: Long = 0L
 )
 
 fun Chat.toDto() = ChatDto(
@@ -37,7 +39,14 @@ fun Chat.toDto() = ChatDto(
     title = title,
     createdAt = createdAt,
     updatedAt = updatedAt,
-    messages = messages.map { MessageDto(role = it.role.name.lowercase(), content = it.content) }
+    messages = messages.map {
+        MessageDto(
+            role = it.role.name.lowercase(),
+            content = it.content,
+            id = it.id,
+            timestamp = it.timestamp
+        )
+    }
 )
 
 fun ChatDto.toDomain() = Chat(
@@ -47,6 +56,11 @@ fun ChatDto.toDomain() = Chat(
     updatedAt = updatedAt,
     messages = messages.map {
         val role = if (it.role == "user") Role.USER else Role.MITRA
-        ChatMessage(role = role, content = it.content)
+        ChatMessage(
+            id = if (it.id.isBlank()) UUID.randomUUID().toString() else it.id,
+            role = role,
+            content = it.content,
+            timestamp = if (it.timestamp > 0L) it.timestamp else System.currentTimeMillis()
+        )
     }.toMutableList()
 )
