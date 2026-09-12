@@ -81,6 +81,8 @@ class MessageAdapter(
     }
 
     inner class MitraVH(private val b: ItemMessageMitraBinding) : RecyclerView.ViewHolder(b.root) {
+        private var boundMessageId: String? = null
+
         fun bind(msg: ChatMessage) {
             b.tvMessage.text = msg.content
             b.tvTime.text = msg.timestamp.toFormattedTime()
@@ -102,11 +104,16 @@ class MessageAdapter(
                 copyToClipboard(b.root.context, msg.content)
                 true
             }
-            popIn(b.msgContainer)
+            if (boundMessageId != msg.id) {
+                boundMessageId = msg.id
+                popIn(b.msgContainer)
+            }
         }
     }
 
     inner class UserVH(private val b: ItemMessageUserBinding) : RecyclerView.ViewHolder(b.root) {
+        private var boundMessageId: String? = null
+
         fun bind(msg: ChatMessage) {
             b.tvMessage.text = msg.content
             b.tvTime.text = msg.timestamp.toFormattedTime()
@@ -115,7 +122,10 @@ class MessageAdapter(
                 copyToClipboard(b.root.context, msg.content)
                 true
             }
-            popIn(b.msgContainer)
+            if (boundMessageId != msg.id) {
+                boundMessageId = msg.id
+                popIn(b.msgContainer)
+            }
         }
     }
 
