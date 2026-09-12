@@ -70,4 +70,9 @@
     <string name="cd_tts">Voice reply</string>
     <string name="tts_on">Voice replies enabled</string>
     <string name="tts_off">Voice replies disabled</string>
+    <string name="voice_no_match">Didn\'t catch that. Try again.</string>
+    <string name="voice_timeout">No speech detected. Try again.</string>
+    <string name="voice_network">Voice service unavailable. Check your connection.</string>
+    <string name="voice_busy">Voice recognizer is busy. Try again in a moment.</string>
+    <string name="voice_error">Could not understand that. Try again.</string>
 </resources>
