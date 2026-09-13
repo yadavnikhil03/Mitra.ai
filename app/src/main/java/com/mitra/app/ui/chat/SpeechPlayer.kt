@@ -21,6 +21,9 @@ internal class SpeechPlayer(
 
     var onSpeechChange: ((Boolean) -> Unit)? = null
 
+    var isPlaying = false
+        private set
+
     private val main = Handler(Looper.getMainLooper())
     private val jobs = LinkedHashMap<Int, Job>()
     private var stopped = true
@@ -222,6 +225,7 @@ internal class SpeechPlayer(
     }
 
     private fun setPlaying(playing: Boolean) {
+        isPlaying = playing
         main.post { onSpeechChange?.invoke(playing) }
     }
 

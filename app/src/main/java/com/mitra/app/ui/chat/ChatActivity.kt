@@ -33,7 +33,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -72,10 +71,9 @@ class ChatActivity : AppCompatActivity() {
 
     private var speechRecognizer: SpeechRecognizer? = null
     private var isRecording = false
-    private var baseText = ""
 
     private var tts: TextToSpeech? = null
-    private var isTtsEnabled = false
+    private var isTtsEnabled = true
     private var ttsReady = false
     private val spokenPerChat = mutableMapOf<String, String>()
     private var pendingSpeech: Pair<String, String>? = null
@@ -111,6 +109,7 @@ class ChatActivity : AppCompatActivity() {
 
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.etMessage.clearFocus()
 
         handleBackPress()
 
@@ -122,6 +121,8 @@ class ChatActivity : AppCompatActivity() {
         setupHeaderButtons()
         setupFace()
         setupFaceMode()
+        syncTtsIcon()
+        enterFaceMode()
 
         requestNotificationPermissionAndSchedule()
 
@@ -138,16 +139,18 @@ class ChatActivity : AppCompatActivity() {
         observeEvents()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.etMessage.clearFocus()
+    }
+
     private fun handleBackPress() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
-                } else if (faceMode) {
-                    exitFaceMode()
                 } else {
-                    isEnabled = false
-                    onBackPressedDispatcher.onBackPressed()
+                    moveTaskToBack(true)
                 }
             }
         })
@@ -209,7 +212,6 @@ class ChatActivity : AppCompatActivity() {
 
         speakingSubtitle = cleanText
         setFaceState("speaking")
-        if (faceMode) updateFaceSubtitle(vm.state.value)
 
         val clauses = cleanText.split(Regex("(?<=[.,?!;…—\n])\\s+"))
         val units = mutableListOf<SpeechPlayer.SpeechClause>()
@@ -264,10 +266,8 @@ class ChatActivity : AppCompatActivity() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.faceOverlay) { _, insets ->
             val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
             val navBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
-            val lastFaceSubtitle = binding.tvFaceSubtitle.layoutParams as android.widget.FrameLayout.LayoutParams
-            lastFaceSubtitle.bottomMargin = navBars.bottom + 96
-            val lastFaceMic = binding.btnFaceMic.layoutParams as android.widget.FrameLayout.LayoutParams
-            lastFaceMic.bottomMargin = navBars.bottom + 24
+            val faceBottomBar = binding.faceBottomBar.layoutParams as android.widget.FrameLayout.LayoutParams
+            faceBottomBar.bottomMargin = navBars.bottom + 24
             if (faceMode) {
                 binding.faceTopBar.updatePadding(top = statusBars.top + 10)
             }
@@ -360,15 +360,19 @@ class ChatActivity : AppCompatActivity() {
     private fun setupFace() {
         binding.l2dView.listener = object : L2DView.Listener {
             override fun onFaceReady() {
-                runOnUiThread { faceLoaded = true }
+                runOnUiThread {
+                    faceLoaded = true
+                    binding.l2dView.setState(faceState)
+                    binding.l2dView.refreshSize()
+                    if (!binding.btnFaceMic.isShown) {
+                        binding.btnFaceMic.visibility = View.VISIBLE
+                    }
+                }
             }
             override fun onFaceError(message: String) {
                 runOnUiThread {
-                    if (faceMode) {
-                        exitFaceMode()
-                    } else {
-                        binding.l2dView.visibility = View.GONE
-                    }
+                    Toast.makeText(this@ChatActivity, message, Toast.LENGTH_SHORT).show()
+                    binding.l2dView.visibility = View.GONE
                 }
             }
         }
@@ -406,45 +410,50 @@ class ChatActivity : AppCompatActivity() {
         faceFullSet.constrainWidth(overlay.id, ConstraintSet.MATCH_CONSTRAINT)
         faceFullSet.constrainHeight(overlay.id, ConstraintSet.MATCH_CONSTRAINT)
 
-        binding.btnFaceClose.setOnClickListener { toggleFaceMode() }
+        binding.btnFaceDrawer.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
         binding.btnFaceMic.setOnClickListener { onMicClick() }
-    }
-
-    private fun toggleFaceMode() {
-        if (faceMode) exitFaceMode() else enterFaceMode()
+        binding.btnFaceTts.setOnClickListener { toggleTts() }
+        binding.btnFaceNewChat.setOnClickListener { vm.newChat() }
+        binding.btnFaceInfo.setOnClickListener { showInfoSheet() }
     }
 
     private fun enterFaceMode() {
         faceMode = true
-        binding.drawerLayout.closeDrawers()
-        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        binding.etMessage.clearFocus()
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(window.decorView.windowToken, 0)
-
         faceFullSet.applyTo(binding.mainContent)
         binding.faceOverlay.setBackgroundColor(getColor(R.color.night_edge))
         binding.faceTopBar.visibility = View.VISIBLE
         binding.tvFaceSubtitle.visibility = View.VISIBLE
         binding.btnFaceMic.visibility = View.VISIBLE
+        binding.header.visibility = View.GONE
+        binding.headerDivider.visibility = View.GONE
+        binding.incognitoBanner.visibility = View.GONE
+        binding.recyclerMessages.visibility = View.GONE
+        binding.suggestionContainer.visibility = View.GONE
+        binding.composerContainer.visibility = View.GONE
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        setFaceState("idle")
+        restoreFaceState()
         updateFaceSubtitle(vm.state.value)
         binding.faceOverlay.post { binding.l2dView.refreshSize() }
     }
 
-    private fun exitFaceMode() {
-        faceMode = false
-        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-        if (isRecording) speechRecognizer?.stopListening()
-        setFaceState("idle")
-        inlineFaceSet.applyTo(binding.mainContent)
-        binding.faceOverlay.setBackgroundResource(R.drawable.bg_avatar_stage)
-        binding.faceTopBar.visibility = View.GONE
-        binding.tvFaceSubtitle.visibility = View.GONE
-        binding.btnFaceMic.visibility = View.GONE
-        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        binding.faceOverlay.post { binding.l2dView.refreshSize() }
+    private fun restoreFaceState() {
+        faceState = "reset"
+        when {
+            isRecording -> setFaceState("listening")
+            isThinking -> setFaceState("thinking")
+            ::speechPlayer.isInitialized && speechPlayer.isPlaying -> setFaceState("speaking")
+            else -> {
+                val lastMitra = vm.state.value.items
+                    .filterIsInstance<MessageItem.Regular>()
+                    .lastOrNull { it.msg.role == Role.MITRA }
+                val pendingReply = lastMitra != null &&
+                    lastMitra.msg.id != spokenPerChat[vm.state.value.activeChatId]
+                if (isTtsEnabled && pendingReply) setFaceState("thinking")
+                else setFaceState("idle")
+            }
+        }
     }
 
     private fun setFaceState(next: String) {
@@ -476,20 +485,11 @@ class ChatActivity : AppCompatActivity() {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        binding.btnTts.setOnClickListener {
-            isTtsEnabled = !isTtsEnabled
-            if (isTtsEnabled) {
-                binding.btnTts.setImageResource(R.drawable.ic_volume_up)
-                Toast.makeText(this, getString(R.string.tts_on), Toast.LENGTH_SHORT).show()
-            } else {
-                speechPlayer.stop()
-                tts?.stop()
-                binding.btnTts.setImageResource(R.drawable.ic_volume_off)
-                Toast.makeText(this, getString(R.string.tts_off), Toast.LENGTH_SHORT).show()
-            }
-        }
+        binding.btnTts.setOnClickListener { toggleTts() }
 
-        binding.btnAvatar.setOnClickListener { toggleFaceMode() }
+        binding.btnAvatar.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
 
         binding.btnHeaderNewChat.setOnClickListener { vm.newChat() }
         binding.btnInfo.setOnClickListener { showInfoSheet() }
@@ -519,6 +519,24 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
+    private fun toggleTts() {
+        isTtsEnabled = !isTtsEnabled
+        if (isTtsEnabled) {
+            Toast.makeText(this, getString(R.string.tts_on), Toast.LENGTH_SHORT).show()
+        } else {
+            speechPlayer.stop()
+            tts?.stop()
+            Toast.makeText(this, getString(R.string.tts_off), Toast.LENGTH_SHORT).show()
+        }
+        syncTtsIcon()
+    }
+
+    private fun syncTtsIcon() {
+        val res = if (isTtsEnabled) R.drawable.ic_volume_up else R.drawable.ic_volume_off
+        binding.btnTts.setImageResource(res)
+        binding.btnFaceTts.setImageResource(res)
+    }
+
     private fun observeState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -533,12 +551,7 @@ class ChatActivity : AppCompatActivity() {
                     drawerAdapter.setActiveId(state.activeChatId)
                     drawerAdapter.submitList(state.allChats.toList())
 
-                    val hasUserMessages = state.items.any { item ->
-                        item is MessageItem.Regular && item.msg.role == Role.USER
-                    }
-
-                    binding.recyclerMessages.visibility = View.VISIBLE
-                    binding.suggestionContainer.visibility = if (hasUserMessages) View.GONE else View.VISIBLE
+                    binding.suggestionContainer.visibility = View.GONE
 
                     binding.btnSend.alpha = if (state.isBusy) 0.4f else 1f
                     binding.btnSend.isEnabled = !state.isBusy
@@ -603,17 +616,17 @@ class ChatActivity : AppCompatActivity() {
                         is ChatEvent.NavigateToLogin -> goToLogin()
                         is ChatEvent.ShowToast -> Toast.makeText(this@ChatActivity, event.msg, Toast.LENGTH_LONG).show()
                         is ChatEvent.ShowGlowThinking -> {
-                        setGlowThinking(event.on)
-                        if (event.on) {
-                            setFaceState("thinking")
-                        } else {
-                            val pendingSpeak = isTtsEnabled && vm.state.value.items
-                                .filterIsInstance<MessageItem.Regular>()
-                                .lastOrNull { it.msg.role == Role.MITRA }
-                                ?.let { it.msg.id != spokenPerChat[vm.state.value.activeChatId] } == true
-                            if (faceState == "thinking" && !pendingSpeak) setFaceState("idle")
+                            setGlowThinking(event.on)
+                            if (event.on) {
+                                setFaceState("thinking")
+                            } else {
+                                val pendingSpeak = isTtsEnabled && vm.state.value.items
+                                    .filterIsInstance<MessageItem.Regular>()
+                                    .lastOrNull { it.msg.role == Role.MITRA }
+                                    ?.let { it.msg.id != spokenPerChat[vm.state.value.activeChatId] } == true
+                                if (faceState == "thinking" && !pendingSpeak) setFaceState("idle")
+                            }
                         }
-                    }
                     }
                 }
             }
@@ -663,26 +676,24 @@ class ChatActivity : AppCompatActivity() {
             override fun onResults(results: Bundle?) {
                 val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 val text = matches?.firstOrNull() ?: ""
-                if (text.isNotEmpty()) {
-                    val sep = if (baseText.isNotEmpty()) " " else ""
-                    val full = (baseText + sep + text).trim()
-                    binding.etMessage.setText(full)
-                    binding.etMessage.setSelection(full.length)
-                    if (vm.sendMessage(full)) {
-                        binding.etMessage.setText("")
+                if (text.isNotEmpty() && text.isNotBlank()) {
+                    if (vm.sendMessage(text.trim())) {
                         if (faceMode) setFaceState("thinking")
                     } else {
                         if (faceMode && faceState == "listening") setFaceState("idle")
                     }
+                } else {
+                    if (faceMode && faceState == "listening") setFaceState("idle")
                 }
                 setMicRecording(false)
             }
             override fun onPartialResults(partialResults: Bundle?) {
-                val partial = partialResults
-                    ?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-                    ?.firstOrNull() ?: return
-                val sep = if (baseText.isNotEmpty()) " " else ""
-                binding.etMessage.setText((baseText + sep + partial).trim())
+                if (isRecording && faceMode) {
+                    val partial = partialResults
+                        ?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                        ?.firstOrNull() ?: return
+                    binding.tvFaceSubtitle.text = partial
+                }
             }
             override fun onError(error: Int) {
                 setMicRecording(false)
@@ -719,8 +730,6 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun startVoice() {
-        baseText = binding.etMessage.text?.toString()?.trim() ?: ""
-        binding.etMessage.hint = getString(R.string.listening)
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
             putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-IN")
@@ -771,7 +780,6 @@ class ChatActivity : AppCompatActivity() {
             binding.btnFaceMic.animate().scaleX(1f).scaleY(1f).setDuration(200).start()
             binding.btnFaceMic.scaleX = 1f
             binding.btnFaceMic.scaleY = 1f
-            binding.etMessage.hint = getString(R.string.type_anything)
         }
     }
 

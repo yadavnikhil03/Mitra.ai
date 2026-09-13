@@ -362,13 +362,13 @@
                 android:visibility="gone">
 
                 <ImageButton
-                    android:id="@+id/btnFaceClose"
+                    android:id="@+id/btnFaceDrawer"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/bg_icon_btn"
-                    android:src="@drawable/ic_collapse"
+                    android:src="@drawable/ic_chats"
                     android:padding="9dp"
-                    android:contentDescription="@string/cd_face_close" />
+                    android:contentDescription="@string/cd_chats" />
 
                 <TextView
                     android:id="@+id/faceTitle"
@@ -382,41 +382,79 @@
                     android:textStyle="bold"
                     android:gravity="center" />
 
-                <View
-                    android:layout_width="40dp"
-                    android:layout_height="40dp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageButton
+                        android:id="@+id/btnFaceTts"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_icon_btn"
+                        android:src="@drawable/ic_volume_off"
+                        android:padding="9dp"
+                        android:contentDescription="@string/cd_tts"
+                        android:layout_marginEnd="6dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnFaceNewChat"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_icon_btn"
+                        android:src="@drawable/ic_plus"
+                        android:padding="9dp"
+                        android:contentDescription="@string/new_chat"
+                        android:layout_marginEnd="6dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnFaceInfo"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_icon_btn"
+                        android:src="@drawable/ic_info"
+                        android:padding="9dp"
+                        android:contentDescription="@string/cd_info" />
+                </LinearLayout>
             </LinearLayout>
 
-            <!-- Face mode subtitle -->
-            <TextView
-                android:id="@+id/tvFaceSubtitle"
+            <!-- Face mode bottom bar: AI text + mic on the same line, centered -->
+            <LinearLayout
+                android:id="@+id/faceBottomBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginHorizontal="32dp"
-                android:gravity="center"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="10dp"
-                android:maxLines="3"
-                android:text="@string/face_subtitle_idle"
-                android:textSize="15sp"
-                android:textColor="@color/text_primary"
-                android:background="@drawable/bg_face_subtitle"
-                android:visibility="gone" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-            <!-- Face mode mic -->
-            <ImageButton
-                android:id="@+id/btnFaceMic"
-                android:layout_width="62dp"
-                android:layout_height="62dp"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/bg_face_mic"
-                android:src="@drawable/ic_mic"
-                android:padding="17dp"
-                android:elevation="4dp"
-                android:contentDescription="@string/cd_mic"
-                android:visibility="gone" />
+                <TextView
+                    android:id="@+id/tvFaceSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="14dp"
+                    android:maxWidth="230dp"
+                    android:gravity="center"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
+                    android:maxLines="3"
+                    android:text="@string/face_subtitle_idle"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_primary"
+                    android:background="@drawable/bg_face_subtitle"
+                    android:visibility="gone" />
+
+                <ImageButton
+                    android:id="@+id/btnFaceMic"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    android:background="@drawable/bg_face_mic"
+                    android:src="@drawable/ic_mic"
+                    android:padding="18dp"
+                    android:elevation="4dp"
+                    android:contentDescription="@string/cd_mic"
+                    android:visibility="gone" />
+            </LinearLayout>
 
         </FrameLayout>
 

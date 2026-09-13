@@ -45,11 +45,12 @@
     if (!model || w === 0 || h === 0) return
     var isPortrait = h > 1.15 * w
     if (isPortrait) {
-      model.anchor.set(0.5, 1)
-      var s = Math.min(w / model.width, h / model.height)
+      model.anchor.set(0.5, 0)
+      var topGap = 0.19
+      var s = Math.min(w / model.width, (h * (1 - topGap)) / model.height)
       model.scale.set(s, s)
       model.x = w / 2
-      model.y = h
+      model.y = h * topGap
     } else {
       model.anchor.set(0.5, 0.5)
       var sc = Math.min(w / model.width, h / model.height) * 0.9
