@@ -6,8 +6,8 @@
     android:viewportHeight="12">
     <path
         android:pathData="M6,6m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"
-        android:fillColor="#E29578" />
+        android:fillColor="@color/ember_core" />
     <path
         android:pathData="M6,6m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0"
-        android:fillColor="#F7F4F0" />
+        android:fillColor="#F0F2F5" />
 </vector>

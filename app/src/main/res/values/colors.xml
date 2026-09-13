@@ -1,33 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="night">#161412</color>
-    <color name="night_2">#1D1A17</color>
-    <color name="night_edge">#12100E</color>
+    <color name="night">#0D1117</color>
+    <color name="night_2">#151B23</color>
+    <color name="night_edge">#090B0F</color>
 
-    <color name="ember_core">#E29578</color>
-    <color name="ember">#DDA15E</color>
-    <color name="ember_deep">#BC6C25</color>
-    <color name="rose">#E08283</color>
+    <color name="ember_core">#8B7EF7</color>
+    <color name="ember">#A78BFF</color>
+    <color name="ember_deep">#6C5CE7</color>
+    <color name="rose">#FF6B81</color>
 
-    <color name="text_primary">#F7F4F0</color>
-    <color name="muted">#AEA49C</color>
-    <color name="faint">#736B63</color>
+    <color name="text_primary">#F0F2F5</color>
+    <color name="muted">#8A94A0</color>
+    <color name="faint">#5A6370</color>
 
     <color name="line">#1AFFFFFF</color>
-    <color name="line_warm">#33E29578</color>
-    <color name="glass">#F01D1A17</color>
-    <color name="surface_card">#221F1C</color>
-    <color name="user_bubble">#342A24</color>
-    <color name="mitra_bubble">#221F1C</color>
+    <color name="line_warm">#33A78BFF</color>
+    <color name="glass">#F0151B23</color>
+    <color name="surface_card">#1B212B</color>
+    <color name="user_bubble">#232D3A</color>
+    <color name="mitra_bubble">#1B212B</color>
     <color name="auth_input_bg">#0FFFFFFF</color>
-    <color name="input_focused">#26E29578</color>
+    <color name="input_focused">#268B7EF7</color>
 
-    <color name="incognito_bg">#181922</color>
+    <color name="incognito_bg">#15172D</color>
     <color name="incognito_accent">#818CF8</color>
-    <color name="status_bar">#12100E</color>
+    <color name="status_bar">#090B0F</color>
 
-    <color name="support_bg">#1AE29578</color>
-    <color name="crisis_rose_bg">#1FE08283</color>
-    <color name="crisis_rose_border">#66E08283</color>
+    <color name="support_bg">#1A8B7EF7</color>
+    <color name="crisis_rose_bg">#1FFF6B81</color>
+    <color name="crisis_rose_border">#66FF6B81</color>
+
+    <color name="gradient_start">#8B7EF7</color>
+    <color name="gradient_end">#5AC8D9</color>
 </resources>

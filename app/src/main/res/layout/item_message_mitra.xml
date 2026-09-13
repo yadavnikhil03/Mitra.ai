@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="📞 Call Tele-MANAS (14416)"
-            android:textColor="#120809"
+            android:textColor="#090B0F"
             android:textSize="13.5sp"
             android:fontFamily="sans-serif-medium"
             android:textStyle="bold"

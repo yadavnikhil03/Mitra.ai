@@ -73,6 +73,11 @@ class L2DView @JvmOverloads constructor(
         evaluateJavascript("window.MitraFace && window.MitraFace.lookAt($x, $y)", null)
     }
 
+    fun setFeetY(y: Float) {
+        if (!faceReady) return
+        evaluateJavascript("window.MitraFace && window.MitraFace.setFeetY($y)", null)
+    }
+
     private inner class Bridge {
         @JavascriptInterface
         fun onFaceReady() {

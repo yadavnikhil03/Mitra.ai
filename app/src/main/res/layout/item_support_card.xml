@@ -14,7 +14,7 @@
         android:id="@+id/tvSupportText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#F5ECE4"
+        android:textColor="#E8ECF1"
         android:textSize="14sp"
         android:lineSpacingMultiplier="1.5" />
 
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="📞 Call Tele-MANAS (14416)"
-        android:textColor="#120809"
+        android:textColor="#090B0F"
         android:textSize="14sp"
         android:fontFamily="sans-serif-medium"
         android:textStyle="bold"

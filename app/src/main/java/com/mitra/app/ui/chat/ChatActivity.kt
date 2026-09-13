@@ -71,6 +71,9 @@ class ChatActivity : AppCompatActivity() {
 
     private var speechRecognizer: SpeechRecognizer? = null
     private var isRecording = false
+    private var liveMode = false
+    private val liveRestartHandler = android.os.Handler(android.os.Looper.getMainLooper())
+    private var liveRestartPending = false
 
     private var tts: TextToSpeech? = null
     private var isTtsEnabled = true
@@ -94,13 +97,19 @@ class ChatActivity : AppCompatActivity() {
 
     private val micPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { granted -> if (granted) startVoice() }
+    ) { granted ->
+        if (granted) {
+            liveMode = true
+            startVoice()
+        }
+    }
 
     private val notificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { }
 
     private var glowBreathAnimator: ValueAnimator? = null
+    private var faceGlowAnimator: ObjectAnimator? = null
     private var isThinking = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -181,6 +190,7 @@ class ChatActivity : AppCompatActivity() {
                             setFaceState("speaking")
                         } else if (faceState == "speaking") {
                             setFaceState("idle")
+                            if (liveMode) scheduleLiveRestart(400)
                         }
                     }
                 }
@@ -624,7 +634,10 @@ class ChatActivity : AppCompatActivity() {
                                     .filterIsInstance<MessageItem.Regular>()
                                     .lastOrNull { it.msg.role == Role.MITRA }
                                     ?.let { it.msg.id != spokenPerChat[vm.state.value.activeChatId] } == true
-                                if (faceState == "thinking" && !pendingSpeak) setFaceState("idle")
+                                if (faceState == "thinking" && !pendingSpeak) {
+                                    setFaceState("idle")
+                                    if (liveMode && !isTtsEnabled) scheduleLiveRestart(500)
+                                }
                             }
                         }
                     }
@@ -676,14 +689,16 @@ class ChatActivity : AppCompatActivity() {
             override fun onResults(results: Bundle?) {
                 val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 val text = matches?.firstOrNull() ?: ""
-                if (text.isNotEmpty() && text.isNotBlank()) {
+                if (text.isNotBlank()) {
                     if (vm.sendMessage(text.trim())) {
                         if (faceMode) setFaceState("thinking")
                     } else {
-                        if (faceMode && faceState == "listening") setFaceState("idle")
+                        if (liveMode) scheduleLiveRestart(600)
+                        else if (faceMode && faceState == "listening") setFaceState("idle")
                     }
                 } else {
-                    if (faceMode && faceState == "listening") setFaceState("idle")
+                    if (liveMode) scheduleLiveRestart(600)
+                    else if (faceMode && faceState == "listening") setFaceState("idle")
                 }
                 setMicRecording(false)
             }
@@ -697,6 +712,10 @@ class ChatActivity : AppCompatActivity() {
             }
             override fun onError(error: Int) {
                 setMicRecording(false)
+                if (liveMode) {
+                    scheduleLiveRestart(900)
+                    return
+                }
                 if (faceMode) setFaceState("idle")
                 val message = when (error) {
                     SpeechRecognizer.ERROR_NO_MATCH -> getString(R.string.voice_no_match)
@@ -716,6 +735,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun onMicClick() {
+        if (liveMode) { exitLiveMode(); return }
         if (isRecording) {
             speechRecognizer?.stopListening()
             setMicRecording(false)
@@ -726,7 +746,19 @@ class ChatActivity : AppCompatActivity() {
             micPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
             return
         }
+        liveMode = true
         startVoice()
+    }
+
+    private fun exitLiveMode() {
+        liveMode = false
+        liveRestartHandler.removeCallbacksAndMessages(null)
+        liveRestartPending = false
+        if (isRecording) speechRecognizer?.stopListening()
+        setMicRecording(false)
+        if (::speechPlayer.isInitialized) speechPlayer.stop()
+        tts?.stop()
+        setFaceState("idle")
     }
 
     private fun startVoice() {
@@ -736,12 +768,34 @@ class ChatActivity : AppCompatActivity() {
             putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
             putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
         }
-        speechRecognizer?.startListening(intent)
+        try { speechRecognizer?.startListening(intent) }
+        catch (_: Exception) { if (liveMode) scheduleLiveRestart(1000) }
+    }
+
+    private fun scheduleLiveRestart(delayMs: Long = 450) {
+        if (!liveMode) return
+        if (liveRestartPending) return
+        liveRestartPending = true
+        liveRestartHandler.postDelayed({
+            liveRestartPending = false
+            if (!liveMode) return@postDelayed
+            if (::speechPlayer.isInitialized && speechPlayer.isPlaying) {
+                scheduleLiveRestart(600); return@postDelayed
+            }
+            if (isRecording) return@postDelayed
+            setFaceState("listening")
+            startVoice()
+        }, delayMs)
     }
 
     private fun setMicRecording(recording: Boolean) {
         isRecording = recording
         if (recording) {
+            faceGlowAnimator = ObjectAnimator.ofFloat(binding.faceGlow, "alpha", 0.45f, 1f, 0.45f).apply {
+                duration = 1800
+                repeatCount = ObjectAnimator.INFINITE
+                start()
+            }
             binding.btnMic.setImageResource(R.drawable.ic_mic_stop)
             binding.btnMic.setBackgroundResource(R.drawable.bg_mic_recording)
             binding.btnMic.imageTintList =
@@ -768,6 +822,9 @@ class ChatActivity : AppCompatActivity() {
                 start()
             }
         } else {
+            faceGlowAnimator?.cancel()
+            faceGlowAnimator = null
+            binding.faceGlow.alpha = 1f
             binding.btnMic.setImageResource(R.drawable.ic_mic)
             binding.btnMic.setBackgroundResource(R.drawable.bg_icon_btn)
             binding.btnMic.imageTintList = null
@@ -785,6 +842,8 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         glowBreathAnimator?.cancel()
+        faceGlowAnimator?.cancel()
+        liveRestartHandler.removeCallbacksAndMessages(null)
         speechRecognizer?.destroy()
         if (::speechPlayer.isInitialized) speechPlayer.stop()
         tts?.stop()

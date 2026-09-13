@@ -15,6 +15,7 @@
   var state = 'idle'
   var stateTime = 0
   var nodStarted = 0
+  var feetY = -1
 
   function showStatus(text) {
     statusEl.style.display = text ? 'block' : 'none'
@@ -39,24 +40,29 @@
     if (model) fitModel()
   }
 
+  function placeModel() {
+    var w = canvas.clientWidth
+    var h = canvas.clientHeight
+    if (!model || w === 0 || h === 0) return
+    model.x = w * 0.62
+    model.y = h / 2
+  }
+
   function fitModel() {
     var w = canvas.clientWidth
     var h = canvas.clientHeight
     if (!model || w === 0 || h === 0) return
     var isPortrait = h > 1.15 * w
     if (isPortrait) {
-      model.anchor.set(0.5, 0)
-      var topGap = 0.19
-      var s = Math.min(w / model.width, (h * (1 - topGap)) / model.height)
+      model.anchor.set(0.5, 0.16)
+      var s = (h * 1.3) / model.height
       model.scale.set(s, s)
-      model.x = w / 2
-      model.y = h * topGap
+      placeModel()
     } else {
-      model.anchor.set(0.5, 0.5)
-      var sc = Math.min(w / model.width, h / model.height) * 0.9
+      model.anchor.set(0.5, 0.16)
+      var sc = (h * 1.2) / model.height
       model.scale.set(sc, sc)
-      model.x = w / 2
-      model.y = h / 2
+      placeModel()
     }
   }
 
@@ -238,6 +244,10 @@
     },
     lookAt: function (x, y) {
       if (isFinite(x)) lookAt(Math.max(-1, Math.min(1, x)), isFinite(y) ? Math.max(-1, Math.min(1, y)) : 0)
+    },
+    setFeetY: function (y) {
+      feetY = isFinite(y) ? Math.max(0, y) : -1
+      placeModel()
     },
     getState: function () { return state },
     isReady: function () { return running }

@@ -137,7 +137,7 @@
                 android:layout_height="50dp"
                 android:text="@string/sign_in"
                 android:background="@drawable/bg_cta_button"
-                android:textColor="#141210"
+                android:textColor="#0A0C0F"
                 android:textSize="15.5sp"
                 android:textStyle="bold"
                 android:stateListAnimator="@null"

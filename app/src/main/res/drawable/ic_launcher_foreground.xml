@@ -5,45 +5,30 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Background Halo Ring -->
+    <!-- Ring -->
     <path
-        android:pathData="M54,54m-44,0a44,44 0,1 1,88 0a44,44 0,1 1,-88 0"
-        android:fillColor="#12E29578" />
-
-    <path
-        android:pathData="M54,54m-38,0a38,38 0,1 1,76 0a38,38 0,1 1,-76 0"
-        android:strokeWidth="1.2"
-        android:strokeColor="#33E29578"
+        android:pathData="M54,54m-36,0a36,36 0,1 1,72 0a36,36 0,1 1,-72 0"
+        android:strokeWidth="3.5"
+        android:strokeColor="@color/ember_core"
         android:fillColor="#00000000" />
 
-    <!-- Lotus Base / Diya Bowl -->
+    <!-- Mic head -->
     <path
-        android:pathData="M32,68 C36,80 72,80 76,68 C64,73 44,73 32,68 Z"
-        android:fillColor="#DDA15E" />
+        android:pathData="M46,42a8,8 0,1 1,16 0a8,8 0,1 1,-16 0Z"
+        android:fillColor="#F0F2F5" />
 
-    <!-- Left Lotus Petal -->
+    <!-- Mic stem -->
     <path
-        android:pathData="M32,68 C20,59 23,42 38,51 C32,59 34,64 32,68 Z"
-        android:fillColor="#E29578" />
+        android:pathData="M50,50h8v10a4,4 0,0 1,-8 0Z"
+        android:fillColor="#F0F2F5" />
 
-    <!-- Right Lotus Petal -->
+    <!-- Mic base -->
     <path
-        android:pathData="M76,68 C88,59 85,42 70,51 C76,59 74,64 76,68 Z"
-        android:fillColor="#E29578" />
+        android:pathData="M44,62h20a2,2 0,0 1,0 4H44a2,2 0,0 1,0 -4Z"
+        android:fillColor="#F0F2F5" />
 
-    <!-- Center Lotus Base Petal -->
+    <!-- Sparkle -->
     <path
-        android:pathData="M54,75 C42,75 36,65 36,58 C48,61 60,61 72,58 C72,65 66,75 54,75 Z"
-        android:fillColor="#BC6C25" />
-
-    <!-- Inner Diya Flame -->
-    <path
-        android:pathData="M54,28 C54,28 64,46 64,55 C64,62 59,65 54,65 C49,65 44,62 44,55 C44,46 54,28 54,28 Z"
-        android:fillColor="#F4A261" />
-
-    <!-- Flame Core Glow -->
-    <path
-        android:pathData="M54,36 C54,36 60,49 60,54 C60,59 57,62 54,62 C51,62 48,59 48,54 C48,49 54,36 54,36 Z"
-        android:fillColor="#F7F4F0" />
-
+        android:pathData="M72,26l2,4 4,2-4,2-2,4-2,-4-4,-2 4,-2Z"
+        android:fillColor="@color/gradient_end" />
 </vector>
