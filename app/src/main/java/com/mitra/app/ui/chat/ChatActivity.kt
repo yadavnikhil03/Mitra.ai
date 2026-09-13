@@ -190,7 +190,6 @@ class ChatActivity : AppCompatActivity() {
                             setFaceState("speaking")
                         } else if (faceState == "speaking") {
                             setFaceState("idle")
-                            if (liveMode) scheduleLiveRestart(400)
                         }
                     }
                 }
@@ -636,7 +635,6 @@ class ChatActivity : AppCompatActivity() {
                                     ?.let { it.msg.id != spokenPerChat[vm.state.value.activeChatId] } == true
                                 if (faceState == "thinking" && !pendingSpeak) {
                                     setFaceState("idle")
-                                    if (liveMode && !isTtsEnabled) scheduleLiveRestart(500)
                                 }
                             }
                         }
@@ -689,18 +687,14 @@ class ChatActivity : AppCompatActivity() {
             override fun onResults(results: Bundle?) {
                 val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 val text = matches?.firstOrNull() ?: ""
-                if (text.isNotBlank()) {
-                    if (vm.sendMessage(text.trim())) {
-                        if (faceMode) setFaceState("thinking")
-                    } else {
-                        if (liveMode) scheduleLiveRestart(600)
-                        else if (faceMode && faceState == "listening") setFaceState("idle")
-                    }
-                } else {
-                    if (liveMode) scheduleLiveRestart(600)
-                    else if (faceMode && faceState == "listening") setFaceState("idle")
-                }
                 setMicRecording(false)
+                liveMode = false
+                if (text.isNotBlank()) {
+                    vm.sendMessage(text.trim())
+                    if (faceMode) setFaceState("thinking")
+                } else {
+                    if (faceMode) setFaceState("idle")
+                }
             }
             override fun onPartialResults(partialResults: Bundle?) {
                 if (isRecording && faceMode) {
@@ -712,10 +706,7 @@ class ChatActivity : AppCompatActivity() {
             }
             override fun onError(error: Int) {
                 setMicRecording(false)
-                if (liveMode) {
-                    scheduleLiveRestart(900)
-                    return
-                }
+                liveMode = false
                 if (faceMode) setFaceState("idle")
                 val message = when (error) {
                     SpeechRecognizer.ERROR_NO_MATCH -> getString(R.string.voice_no_match)
@@ -735,10 +726,10 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun onMicClick() {
-        if (liveMode) { exitLiveMode(); return }
         if (isRecording) {
             speechRecognizer?.stopListening()
             setMicRecording(false)
+            liveMode = false
             return
         }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
@@ -769,24 +760,10 @@ class ChatActivity : AppCompatActivity() {
             putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
         }
         try { speechRecognizer?.startListening(intent) }
-        catch (_: Exception) { if (liveMode) scheduleLiveRestart(1000) }
+        catch (_: Exception) { setMicRecording(false); liveMode = false }
     }
 
-    private fun scheduleLiveRestart(delayMs: Long = 450) {
-        if (!liveMode) return
-        if (liveRestartPending) return
-        liveRestartPending = true
-        liveRestartHandler.postDelayed({
-            liveRestartPending = false
-            if (!liveMode) return@postDelayed
-            if (::speechPlayer.isInitialized && speechPlayer.isPlaying) {
-                scheduleLiveRestart(600); return@postDelayed
-            }
-            if (isRecording) return@postDelayed
-            setFaceState("listening")
-            startVoice()
-        }, delayMs)
-    }
+    private fun scheduleLiveRestart(delayMs: Long = 450) { }
 
     private fun setMicRecording(recording: Boolean) {
         isRecording = recording
